@@ -3,9 +3,12 @@ import Image from 'next/image';
 
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
+import { getUserByEmail } from '../utils/backend/getUser';
+import { useRouter } from 'next/router';
 
 export default function Home({ pageProps }) {
-  const { session } = pageProps;
+  const { session, notConfirmed } = pageProps;
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -30,8 +33,23 @@ export default function Home({ pageProps }) {
       ) : (
         <>
           <h1>Hello {session?.user.name}</h1>
+
+          {notConfirmed && (
+            <div>
+              <p>
+                <span className='font-extrabold'>Note: </span>Your account is
+                not confirmed, get your information in!
+              </p>
+              <button
+                className='border px-2 rounded my-3 text-white bg-gray-400 hover:bg-slate-100 hover:text-black'
+                onClick={() => router.push('/register')}
+              >
+                Confirm your information
+              </button>
+            </div>
+          )}
           <button
-            className='text-xl font-extrabold'
+            className='text-xl font-extrabold text-white rounded p-2 bg-purple-700 hover:bg-purple-800'
             onClick={() => {
               signOut();
             }}
@@ -46,8 +64,9 @@ export default function Home({ pageProps }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-
+  const userEmail = session.user.email;
+  const user = await getUserByEmail(userEmail);
   return {
-    props: { pageProps: { session } }, // will be passed to the page component as props
+    props: { pageProps: { session, notConfirmed: !user } }, // will be passed to the page component as props
   };
 }
