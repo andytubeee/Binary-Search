@@ -1,12 +1,13 @@
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import React from 'react';
-import { InfoRegister } from '../components/InfoRegister';
+import { AccountSettings } from '../components/AccountSettings';
 import Navbar from '../components/Navbar';
 import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
 
 export default function ChatPage({ pageProps }) {
   const { session, notConfirmed, user } = pageProps;
+  const ChatWindow = (userId) => {};
   return (
     <>
       <Head>
@@ -14,12 +15,17 @@ export default function ChatPage({ pageProps }) {
       </Head>
       <Navbar signedIn={session} />
       {notConfirmed ? (
-        <InfoRegister session={session.user} />
+        <AccountSettings session={session.user} />
       ) : (
         <>
           <h1 className='text-center text-3xl font-bold mt-5'>Chat</h1>
 
-          <div className='flex'></div>
+          <div className='flex gap-3 justify-between px-4 border'>
+            <div className='flex border flex-col'></div>
+            <div className='flex flex-1 border flex-col'>
+              <ChatWindow />
+            </div>
+          </div>
         </>
       )}
     </>

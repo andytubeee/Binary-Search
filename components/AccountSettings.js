@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 import { addToCollection } from '../utils/backend/insertDocument';
 
-export const InfoRegister = ({ session: user }) => {
+export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   const firstName = user.name.split(' ')[0];
   const lastName = user.name.split(' ').slice(1).join(' ');
   const [userInfo, setUserInfo] = useState({
@@ -14,9 +14,20 @@ export const InfoRegister = ({ session: user }) => {
     gender: '',
     bio: '',
   });
-  // useEffect(() => {
-  //   console.log(userInfo);
-  // }, [userInfo]);
+
+  useEffect(() => {
+    if (fb) {
+      setUserInfo({
+        firstName: fb.firstName,
+        lastName: fb.lastName,
+        email: fb.email,
+        skills: fb.skills,
+        gender: fb.gender,
+        bio: fb.bio,
+      });
+    }
+  }, [fb]);
+
   const skillInputRef = useRef();
   const router = useRouter();
   const SkillBar = ({ label }) => (
@@ -38,7 +49,9 @@ export const InfoRegister = ({ session: user }) => {
     </>
   );
   const handleSubmit = async (e) => {
-    addToCollection('users', userInfo);
+    if (!fb) {
+      addToCollection('users', userInfo);
+    }
   };
   const validate = () => {
     if (userInfo.firstName.length < 1) {
@@ -66,7 +79,9 @@ export const InfoRegister = ({ session: user }) => {
       handleSubmit();
       Swal.fire({
         title: 'Saved',
-        text: 'You are now successfully verified',
+        text: !fb
+          ? 'You are now successfully verified'
+          : 'Your information has been updated',
         icon: 'success',
       }).then(() => {
         router.reload(window.location.pathname);
@@ -82,13 +97,15 @@ export const InfoRegister = ({ session: user }) => {
   };
   return (
     <>
-      <div className='flex flex-col items-center mt-4 py-2'>
-        <h1>Complete your Profile</h1>
+      <div className='flex flex-col items-center my-4 py-2'>
+        <h1 className='font-lg font-bold'>
+          {fb ? 'Account Settings' : 'Complete your Profile'}
+        </h1>
         <div className='flex flex-col w-7/12 gap-3'>
           <input
             className='border rounded p-2 bg-blue-400 text-white'
             placeholder='First Name'
-            defaultValue={firstName}
+            defaultValue={userInfo.firstName}
             onChange={(e) =>
               setUserInfo({ ...userInfo, firstName: e.target.value })
             }
@@ -96,7 +113,7 @@ export const InfoRegister = ({ session: user }) => {
           <input
             className='border rounded p-2 bg-blue-400 text-white'
             placeholder='Last Name'
-            defaultValue={lastName}
+            defaultValue={userInfo.lastName}
             onChange={(e) =>
               setUserInfo({ ...userInfo, lastName: e.target.value })
             }
@@ -104,6 +121,7 @@ export const InfoRegister = ({ session: user }) => {
           <textarea
             className='rounded'
             placeholder='Add a bio about yourself'
+            defaultValue={userInfo.bio}
             height={400}
             onChange={(e) => setUserInfo({ ...userInfo, bio: e.target.value })}
           />
@@ -119,6 +137,7 @@ export const InfoRegister = ({ session: user }) => {
                   onChange={(e) =>
                     setUserInfo({ ...userInfo, gender: e.target.value })
                   }
+                  checked={userInfo.gender === 'Male'}
                 />
                 &nbsp;
                 <label htmlFor='male'>Male</label>
@@ -132,6 +151,7 @@ export const InfoRegister = ({ session: user }) => {
                   onChange={(e) =>
                     setUserInfo({ ...userInfo, gender: e.target.value })
                   }
+                  checked={userInfo.gender === 'Female'}
                 />
                 &nbsp;
                 <label htmlFor='female'>Female</label>
@@ -145,6 +165,7 @@ export const InfoRegister = ({ session: user }) => {
                   onChange={(e) =>
                     setUserInfo({ ...userInfo, gender: e.target.value })
                   }
+                  checked={userInfo.gender === 'Other'}
                 />
                 &nbsp;
                 <label htmlFor='other'>Other</label>

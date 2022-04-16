@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 import { getUserByEmail } from '../utils/backend/getUser';
 import { addToCollection } from '../utils/backend/insertDocument';
-import { InfoRegister } from '../components/InfoRegister';
+import { AccountSettings } from '../components/AccountSettings';
 
 const RegisterSection = () => {
   return (
@@ -27,7 +27,7 @@ export default function RegisterPage({ pageProps }) {
       </Head>
       <Navbar signedIn={session} />
       <h1 className='text-center text-3xl mt-4'>Register</h1>
-      {session && <InfoRegister session={session.user} />}
+      {session && <AccountSettings session={session.user} />}
       {!session && <RegisterSection />}
     </>
   );

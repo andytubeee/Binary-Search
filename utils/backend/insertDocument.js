@@ -7,8 +7,15 @@ import {
   addDoc,
 } from 'firebase/firestore';
 
-export const addToCollection = async (collectionName, doc) => {
+const addToCollection = async (collectionName, doc) => {
   const db = getFirestore();
   const userRef = collection(db, collectionName);
   addDoc(userRef, doc);
 };
+
+const saveToCollection = async (collectionName, doc) => {
+  const db = getFirestore();
+  const userRef = collection(db, collectionName);
+  addDoc(userRef, doc);
+};
+export { addToCollection, saveToCollection };
