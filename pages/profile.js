@@ -18,8 +18,7 @@ export async function getServerSideProps(context) {
         permanent: false,
       },
     };
-  console.log(FirebaseApp);
   return {
-    props: { session }, // will be passed to the page component as props
+    props: { pageProps: { session } }, // will be passed to the page component as props
   };
 }

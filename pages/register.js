@@ -53,6 +53,7 @@ const InfoRegister = ({ session: user }) => {
                     setUserInfo({ ...userInfo, gender: e.target.value })
                   }
                 />
+                &nbsp;
                 <label htmlFor='male'>Male</label>
               </span>
               <span>
@@ -65,6 +66,7 @@ const InfoRegister = ({ session: user }) => {
                     setUserInfo({ ...userInfo, gender: e.target.value })
                   }
                 />
+                &nbsp;
                 <label htmlFor='female'>Female</label>
               </span>
               <span>
@@ -77,6 +79,7 @@ const InfoRegister = ({ session: user }) => {
                     setUserInfo({ ...userInfo, gender: e.target.value })
                   }
                 />
+                &nbsp;
                 <label htmlFor='other'>Other</label>
               </span>
             </div>
