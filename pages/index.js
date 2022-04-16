@@ -6,6 +6,8 @@ import Navbar from '../components/Navbar';
 import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
 import { useRouter } from 'next/router';
 import UserCard from '../components/UserCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const HomeMain = ({ session, otherUsers }) => {
   const [search, setSearch] = useState('');
@@ -54,7 +56,8 @@ const HomeMain = ({ session, otherUsers }) => {
               onClick={onSearchClick}
               className='rounded bg-bsPink1 text-white p-2 hover:bg-bsBeige1 transition-all'
             >
-              Search
+              Search&nbsp;
+              <FontAwesomeIcon icon={faSearch} />
             </button>
           </div>
           <div className='overflow-scroll mt-5'>
@@ -86,7 +89,7 @@ export default function Home({ pageProps }) {
       <Navbar signedIn={session} />
       {!session ? (
         <div className='flex flex-col items-center mt-5 justify-center'>
-          <p className='font-bold'>
+          <p className='font-bold mx-5'>
             To see other users, please register or log in first.
           </p>
 

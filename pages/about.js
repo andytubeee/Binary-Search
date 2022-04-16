@@ -6,6 +6,7 @@ import { getSession } from 'next-auth/react';
 import { getUserByEmail } from '../utils/backend/getUser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 export default function AboutPage({ pageProps }) {
   const router = useRouter();
@@ -27,11 +28,19 @@ export default function AboutPage({ pageProps }) {
         <title>Binary Search - About</title>
       </Head>
       <Navbar signedIn={session} />
-      <div className='m-4'>
-        <h1 className='text-3xl font-bold italic'>{slogan}</h1>
-        <p>
-          Binary Search is a dating platform for CS/Engineering major students
-        </p>
+      <div className='m-4 flex items-center justify-around self-center mx-auto'>
+        <Image
+          src='/assets/vectors/undraw1.svg'
+          height={500}
+          width={500}
+          alt='icon1'
+        />
+        <div>
+          <h1 className='text-3xl font-bold italic'>{slogan}</h1>
+          <p>
+            Binary Search is a dating platform for CS/Engineering major students
+          </p>
+        </div>
         {!session && (
           <button
             className='border rounded p-2 bg-bsBlue hover:bg-cyan-700 text-white'
