@@ -54,6 +54,9 @@ const HomeMain = ({ session, otherUsers }) => {
             />
             <button
               onClick={onSearchClick}
+              onKeyUp={(e) => {
+                console.log(e.key);
+              }}
               className='rounded bg-bsPink1 text-white p-2 hover:bg-bsBeige1 transition-all'
             >
               Search&nbsp;
@@ -80,7 +83,6 @@ const HomeMain = ({ session, otherUsers }) => {
 
 export default function Home({ pageProps }) {
   const { session, notConfirmed, otherUsers } = pageProps;
-  console.log(session);
   const router = useRouter();
   return (
     <>
