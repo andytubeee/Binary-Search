@@ -54,7 +54,7 @@ export default function Navbar({ signedIn }) {
           {!signedIn ? (
             <div className='flex flex-col md:flex-row items-center'>
               <button
-                className='btn-pink m-3'
+                className='btn-pink m-3 font-bold'
                 onClick={() => router.push('/signin')}
               >
                 <FontAwesomeIcon
@@ -64,7 +64,7 @@ export default function Navbar({ signedIn }) {
                 &nbsp; Sign In
               </button>
               <button
-                className='btn-blue'
+                className='btn-blue font-bold'
                 onClick={() => router.push('/register')}
               >
                 <FontAwesomeIcon icon={faDoorOpen} className='text-white' />

@@ -56,12 +56,12 @@ const HomeMain = ({ session, otherUsers }) => {
                   setFilteredUsers(otherUsers);
                 }
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') onSearchClick();
+              }}
             />
             <button
               onClick={onSearchClick}
-              onKeyUp={(e) => {
-                console.log(e.key);
-              }}
               className='btn-pink bg-bsPink1 min-w-max '
             >
               Search&nbsp;
@@ -70,14 +70,7 @@ const HomeMain = ({ session, otherUsers }) => {
           </div>
           <div className='overflow-scroll mt-5'>
             {filteredUsers.map((user, i) => (
-              <UserCard
-                key={i}
-                firstName={user.firstName}
-                lastName={user.lastName}
-                skills={user.skills}
-                bio={user.bio}
-                gender={user.gender}
-              />
+              <UserCard key={i} user={user} />
             ))}
           </div>
         </div>

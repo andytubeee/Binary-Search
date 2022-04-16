@@ -29,4 +29,7 @@
   .btn-cyan {
     @apply btn bg-cyan-900 hover:bg-cyan-800 text-white;
   }
+  .btn-orange {
+    @apply btn bg-orange-300 hover:bg-orange-400 text-white;
+  }
 }

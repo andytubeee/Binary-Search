@@ -19,7 +19,9 @@ const getOtherUsers = async (email) => {
   const userRef = collection(db, 'users');
   const q = query(userRef, where('email', '!=', email));
   const qs = await getDocs(q);
-  return qs.docs.map((doc) => doc.data());
+  return qs.docs.map((doc) => {
+    return { ...Object(doc.data()), id: doc.id };
+  });
 };
 
 const getUserDocId = async (email) => {

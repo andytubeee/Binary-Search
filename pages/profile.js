@@ -22,7 +22,7 @@ const UserProfile = ({ user, router }) => {
         <p>{user?.bio || 'You have no bio'}</p>
 
         <h1 className='font-bold text-lg mt-2'>Skills</h1>
-        <div className='grid grid-cols-5 w-80 p-2'>
+        <div className='flex flex-wrap w-80 p-2'>
           {user.skills.map((skill, i) => (
             <p key={i} className='mx-3'>
               {skill}

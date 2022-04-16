@@ -151,13 +151,13 @@ const RegisterSection = ({ router }) => {
             }
           />
           <button
-            className='btn-blue3 flex justify-center items-center gap-2'
+            className='btn-blue3 flex justify-center items-center mt-1 gap-2'
             onClick={onRegisterClick}
           >
             Register{' '}
           </button>{' '}
         </div>
-        <button className='flex w-[30%] justify-center items-center gap-2 btn-cyan mt-2'>
+        <button className='flex w-[30%] justify-center items-center gap-2 btn-cyan'>
           <Image
             src='/assets/icon/icons8-google.svg'
             height={20}
