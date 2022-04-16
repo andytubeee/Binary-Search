@@ -11,7 +11,7 @@ export default NextAuth({
         'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
     }),
   ],
-  site: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+  // site: process.env.NEXTAUTH_URL || 'http://localhost:3000',
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     jwt: true,

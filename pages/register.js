@@ -221,8 +221,8 @@ export default function RegisterPage({ pageProps }) {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
-  const userEmail = session.user.email;
-  const user = await getUserByEmail(userEmail);
+  const userEmail = session?.user?.email;
+  const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
   if (user) {
     return {
       redirect: {

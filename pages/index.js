@@ -17,20 +17,22 @@ export default function Home({ pageProps }) {
       </Head>
       <Navbar signedIn={session} />
       {!session ? (
-        <button
-          className='text-xl font-bold text-white bg-blue-700 hover:bg-blue-500 py-2 px-4 rounded focus:outline-none focus:shadow-outline flex justify-center items-center gap-4 m-4'
-          onClick={() => {
-            signIn('google');
-          }}
-        >
-          <Image
-            src='/assets/icon/icons8-google.svg'
-            height={20}
-            width={20}
-            alt='googleIcon'
-          />{' '}
-          Login with Google
-        </button>
+        <div className='flex justify-center'>
+          <button
+            className='text-xl font-bold text-white bg-blue-700 hover:bg-blue-500 py-2 px-4 rounded focus:outline-none focus:shadow-outline flex justify-center items-center gap-4 m-4'
+            onClick={() => {
+              signIn('google');
+            }}
+          >
+            <Image
+              src='/assets/icon/icons8-google.svg'
+              height={20}
+              width={20}
+              alt='googleIcon'
+            />{' '}
+            Login with Google
+          </button>
+        </div>
       ) : (
         <>
           <h1 className='text-3xl text-center mt-4'>
@@ -69,9 +71,13 @@ export default function Home({ pageProps }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const userEmail = session.user.email;
-  const user = await getUserByEmail(userEmail);
-  const otherUsers = await getOtherUsers(userEmail);
+  const userEmail = session?.user?.email;
+  // console.log(userEmail);
+  const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
+  // const user = null;
+  const otherUsers = await getOtherUsers(
+    userEmail !== undefined ? userEmail : ''
+  );
   return {
     props: { pageProps: { session, notConfirmed: !user, otherUsers } }, // will be passed to the page component as props
   };
