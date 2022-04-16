@@ -1,6 +1,11 @@
 import React from 'react';
-import { useSession, getSession, signIn } from 'next-auth/react';
-import { faHeart, faBars } from '@fortawesome/free-solid-svg-icons';
+import { useSession, getSession, signIn, signOut } from 'next-auth/react';
+import {
+  faHeart,
+  faBars,
+  faDoorOpen,
+  faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -38,18 +43,25 @@ export default function Navbar({ signedIn }) {
 
         <div>
           {!signedIn ? (
-            <button
-              className='text-white rounded p-2  bg-bsPink1 hover:bg-bsPink2'
-              onClick={() => signIn('google')}
-            >
-              Sign In
-            </button>
+            <div>
+              <button
+                className='text-white rounded p-2  bg-bsPink1 hover:bg-bsPink2'
+                onClick={() => signIn('google')}
+              >
+                <FontAwesomeIcon
+                  icon={faRightFromBracket}
+                  className='text-white'
+                />
+                &nbsp; Sign In
+              </button>
+            </div>
           ) : (
             <button
               className='text-white rounded p-2 bg-purple-700 hover:bg-purple-800 font-bold'
               onClick={() => signOut()}
             >
-              Sign Out
+              <FontAwesomeIcon icon={faDoorOpen} className='text-white' />
+              &nbsp; Sign Out
             </button>
           )}
         </div>
