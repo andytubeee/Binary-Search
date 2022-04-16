@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from 'next-auth/react';
 import { getUserByEmail } from '../utils/backend/getUser';
@@ -10,6 +10,17 @@ import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 export default function AboutPage({ pageProps }) {
   const router = useRouter();
   const { session } = pageProps;
+  const slogans = [
+    'I want to C you ++',
+    'Skill is the new beauty',
+    'Touching grass has never been easier',
+    'It isn’t tough to talk to people',
+    'It is time to talk in person, not through pull requests',
+  ];
+  const [slogan, setSlogan] = useState('');
+  useEffect(() => {
+    setSlogan(slogans[Math.floor(Math.random() * slogans.length)]);
+  }, []);
   return (
     <>
       <Head>
@@ -17,7 +28,7 @@ export default function AboutPage({ pageProps }) {
       </Head>
       <Navbar signedIn={session} />
       <div className='m-4'>
-        <h1 className='text-3xl font-bold'>I want to C you ++</h1>
+        <h1 className='text-3xl font-bold italic'>{slogan}</h1>
         <p>
           Binary Search is a dating platform for CS/Engineering major students
         </p>

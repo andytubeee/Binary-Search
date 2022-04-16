@@ -19,7 +19,7 @@ export default function Home({ pageProps }) {
       {!session ? (
         <div className='flex flex-col items-center mt-5 justify-center'>
           <p className='font-bold'>
-            To view available users, please register or log in first.
+            To see other users, please register or log in first.
           </p>
 
           <button

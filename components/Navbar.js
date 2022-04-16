@@ -35,7 +35,7 @@ export default function Navbar({ signedIn }) {
               Binary Search
             </span>
           </a>
-          <div className='flex gap-2' id='mobile-menu'>
+          <div className='flex gap-4' id='mobile-menu'>
             <MenuItem label='Home' />
             <MenuItem label='About' direct='about' />
           </div>
