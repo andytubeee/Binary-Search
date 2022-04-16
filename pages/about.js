@@ -4,6 +4,8 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from 'next-auth/react';
 import { getUserByEmail } from '../utils/backend/getUser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 
 export default function AboutPage({ pageProps }) {
   const router = useRouter();
@@ -21,10 +23,11 @@ export default function AboutPage({ pageProps }) {
         </p>
         {!session && (
           <button
-            className='border rounded p-2 bg-bsBlue text-white'
+            className='border rounded p-2 bg-bsBlue hover:bg-cyan-700 text-white'
             onClick={() => router.push('/register')}
           >
-            Register Now!
+            <FontAwesomeIcon icon={faUserGroup} className='text-white' />
+            &nbsp; Register Now!
           </button>
         )}
         <p className='fixed bottom-3 left-5'>Developed by Andrew Yang</p>

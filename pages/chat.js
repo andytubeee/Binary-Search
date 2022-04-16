@@ -1,34 +1,28 @@
-import React from 'react';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
-import { getUserByEmail } from '../utils/backend/getUser';
+import React from 'react';
 import Navbar from '../components/Navbar';
+import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
 
-export default function ProfilePage({ pageProps }) {
-  const { session, notConfirmed } = pageProps;
+export default function ChatPage({ pageProps }) {
+  const { session, notConfirmed, user } = pageProps;
   return (
     <>
       <Head>
-        <title>Binary Search - Profile</title>
+        <title>Binary Search - Chat</title>
       </Head>
       <Navbar signedIn={session} />
     </>
   );
 }
-
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const userEmail = session?.user?.email;
   const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
-
-  if (!session)
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
+  const otherUsers = await getOtherUsers(
+    userEmail !== undefined ? userEmail : ''
+  );
   return {
-    props: { pageProps: { session, notConfirmed: !user } },
+    props: { pageProps: { session, notConfirmed: !user, otherUsers } },
   };
 }

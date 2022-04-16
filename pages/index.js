@@ -65,6 +65,7 @@ export default function Home({ pageProps }) {
               lastName={user.lastName}
               skills={user.skills}
               bio={user.bio}
+              gender={user.gender}
             />
           ))}
         </>
@@ -76,13 +77,11 @@ export default function Home({ pageProps }) {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const userEmail = session?.user?.email;
-  // console.log(userEmail);
   const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
-  // const user = null;
   const otherUsers = await getOtherUsers(
     userEmail !== undefined ? userEmail : ''
   );
   return {
-    props: { pageProps: { session, notConfirmed: !user, otherUsers } }, // will be passed to the page component as props
+    props: { pageProps: { session, notConfirmed: !user, otherUsers } },
   };
 }
