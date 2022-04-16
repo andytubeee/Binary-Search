@@ -1,7 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
-import { addToCollection } from '../utils/backend/insertDocument';
+import { getUserDocId } from '../utils/backend/getUser';
+import {
+  addToCollection,
+  saveToCollection,
+} from '../utils/backend/insertDocument';
 
 export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   const firstName = user.name.split(' ')[0];
@@ -32,7 +36,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   const router = useRouter();
   const SkillBar = ({ label }) => (
     <>
-      <div className='flex gap-2 items-center border rounded px-3 justify-center content-start'>
+      <div className='flex gap-2 items-center border rounded px-3 justify-center content-start min-w-max'>
         <p>{label}</p>
         <button
           className='bg-red-500 hover:bg-red-400 text-white rounded-full px-2 my-1'
@@ -50,7 +54,10 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   );
   const handleSubmit = async (e) => {
     if (!fb) {
-      addToCollection('users', userInfo);
+      await addToCollection('users', userInfo);
+    } else {
+      const docId = await getUserDocId(userInfo.email);
+      await saveToCollection('users', userInfo, docId);
     }
   };
   const validate = () => {
@@ -76,15 +83,16 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
       return false;
     }
     try {
-      handleSubmit();
-      Swal.fire({
-        title: 'Saved',
-        text: !fb
-          ? 'You are now successfully verified'
-          : 'Your information has been updated',
-        icon: 'success',
-      }).then(() => {
-        router.reload(window.location.pathname);
+      handleSubmit().then(() => {
+        Swal.fire({
+          title: 'Saved',
+          text: !fb
+            ? 'You are now successfully verified'
+            : 'Your information has been updated',
+          icon: 'success',
+        }).then(() => {
+          router.reload(window.location.pathname);
+        });
       });
       //
     } catch (err) {
@@ -197,7 +205,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
             >
               Add Skill
             </button>
-            <div className='grid grid-cols-5 gap-2 mt-3'>
+            <div className='flex flex-wrap gap-2 mt-3'>
               {userInfo?.skills.map((skill, i) => (
                 <SkillBar key={i} label={skill} />
               ))}

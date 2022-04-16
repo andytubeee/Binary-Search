@@ -55,7 +55,7 @@ export default function ProfilePage({ pageProps }) {
         <AccountSettings session={session.user} />
       ) : (
         <>
-          <div className='flex'>
+          <div className='flex flex-col md:flex-row'>
             <UserProfile user={user} router={router} />
             <div className='flex-1'>
               <AccountSettings session={session.user} firebaseUser={user} />
