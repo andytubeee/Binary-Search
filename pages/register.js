@@ -151,13 +151,13 @@ const RegisterSection = ({ router }) => {
             }
           />
           <button
-            className='rounded p-2 flex justify-center items-center gap-2 bg-bsPink1 hover:bg-bsPink2 text-white'
+            className='btn-blue3 flex justify-center items-center gap-2'
             onClick={onRegisterClick}
           >
             Register{' '}
           </button>{' '}
         </div>
-        <button className='rounded p-2 flex w-[30%] justify-center items-center gap-2 bg-cyan-900 hover:bg-cyan-800 text-white'>
+        <button className='flex w-[30%] justify-center items-center gap-2 btn-cyan mt-2'>
           <Image
             src='/assets/icon/icons8-google.svg'
             height={20}

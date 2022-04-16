@@ -22,7 +22,7 @@ export default function Navbar({ signedIn }) {
 
   const MenuItem = ({ label, direct = '', icon = null, iconPos = 'l' }) => (
     <button
-      className='text-white hover:text-bsPink2'
+      className='text-white hover:text-bsPink2 hover:mb-2 transition-all duration-200'
       onClick={() => router.push(`/${direct}`)}
     >
       {icon && iconPos === 'l' && <FontAwesomeIcon icon={icon} />}&nbsp;
@@ -52,9 +52,9 @@ export default function Navbar({ signedIn }) {
 
         <div>
           {!signedIn ? (
-            <div>
+            <div className='flex flex-col md:flex-row items-center'>
               <button
-                className='text-white rounded p-2 mr-3  bg-bsPink1 hover:bg-bsPink2'
+                className='btn-pink m-3'
                 onClick={() => router.push('/signin')}
               >
                 <FontAwesomeIcon
@@ -64,7 +64,7 @@ export default function Navbar({ signedIn }) {
                 &nbsp; Sign In
               </button>
               <button
-                className='text-white rounded p-2  bg-red-500 hover:bg-red-600'
+                className='btn-blue'
                 onClick={() => router.push('/register')}
               >
                 <FontAwesomeIcon icon={faDoorOpen} className='text-white' />
@@ -86,7 +86,7 @@ export default function Navbar({ signedIn }) {
                 iconPos='r'
               />
               <button
-                className='text-white rounded p-2 bg-purple-700 hover:bg-purple-800 font-bold'
+                className='btn bg-purple-700 hover:bg-purple-800 font-bold'
                 onClick={() => signOut()}
               >
                 <FontAwesomeIcon icon={faArrowTurnUp} className='text-white' />

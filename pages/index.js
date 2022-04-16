@@ -7,7 +7,10 @@ import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
 import { useRouter } from 'next/router';
 import UserCard from '../components/UserCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  faRightFromBracket,
+  faSearch,
+} from '@fortawesome/free-solid-svg-icons';
 
 const HomeMain = ({ session, otherUsers }) => {
   const [search, setSearch] = useState('');
@@ -57,7 +60,7 @@ const HomeMain = ({ session, otherUsers }) => {
               onKeyUp={(e) => {
                 console.log(e.key);
               }}
-              className='rounded bg-bsPink1 text-white p-2 hover:bg-bsBeige1 transition-all'
+              className='btn-pink bg-bsPink1 min-w-max '
             >
               Search&nbsp;
               <FontAwesomeIcon icon={faSearch} />
@@ -91,25 +94,36 @@ export default function Home({ pageProps }) {
       </Head>
       <Navbar signedIn={session} />
       {!session ? (
-        <div className='flex flex-col items-center mt-5 justify-center'>
+        <div className='flex flex-col min-h-[600px] items-center mt-5 justify-center'>
           <p className='font-bold mx-5 text-center'>
             To see other users, please register or log in first.
           </p>
-
-          <button
-            className='text-xl font-bold text-white bg-blue-700 hover:bg-blue-500 py-2 px-4 rounded focus:outline-none focus:shadow-outline flex justify-center items-center gap-4 m-4'
-            onClick={() => {
-              signIn('google');
-            }}
-          >
-            <Image
-              src='/assets/icon/icons8-google.svg'
-              height={20}
-              width={20}
-              alt='googleIcon'
-            />{' '}
-            Login with Google
-          </button>
+          <div className='flex gap-3 flex-wrap justify-center content-center'>
+            <button
+              className='btn-pink mr-3 font-bold'
+              onClick={() => router.push('/signin')}
+            >
+              <FontAwesomeIcon
+                icon={faRightFromBracket}
+                className='text-white'
+              />
+              &nbsp; Sign In
+            </button>
+            <button
+              className='btn-blue2 font-bold flex items-center gap-3'
+              onClick={() => {
+                signIn('google');
+              }}
+            >
+              <Image
+                src='/assets/icon/icons8-google.svg'
+                height={20}
+                width={20}
+                alt='googleIcon'
+              />{' '}
+              Login with Google
+            </button>
+          </div>
         </div>
       ) : (
         <HomeMain session={session} otherUsers={otherUsers} />

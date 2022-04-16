@@ -75,13 +75,16 @@ const SignInSection = ({ router }) => {
             }
           />
           <button
-            className='rounded p-2 flex justify-center items-center gap-2 bg-bsBlue hover:bg-blue-500 text-white'
+            className='btn-blue3 flex justify-center items-center gap-2'
             onClick={onSignInClick}
           >
             Sign In{' '}
           </button>{' '}
         </div>
-        <button className='rounded p-2 flex w-[30%] justify-center items-center gap-2 bg-cyan-900 hover:bg-cyan-800 text-white mt-2'>
+        <button
+          className='flex w-[30%] justify-center items-center gap-2 btn-cyan mt-3'
+          onClick={() => signIn('google')}
+        >
           <Image
             src='/assets/icon/icons8-google.svg'
             height={20}
