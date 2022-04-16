@@ -1,6 +1,7 @@
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import React from 'react';
+import { InfoRegister } from '../components/InfoRegister';
 import Navbar from '../components/Navbar';
 import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
 
@@ -12,6 +13,15 @@ export default function ChatPage({ pageProps }) {
         <title>Binary Search - Chat</title>
       </Head>
       <Navbar signedIn={session} />
+      {notConfirmed ? (
+        <InfoRegister session={session.user} />
+      ) : (
+        <>
+          <h1 className='text-center text-3xl font-bold mt-5'>Chat</h1>
+
+          <div className='flex'></div>
+        </>
+      )}
     </>
   );
 }

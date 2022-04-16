@@ -44,7 +44,7 @@ export default function Home({ pageProps }) {
           </h1>
 
           {notConfirmed && (
-            <div>
+            <div className='flex justify-center flex-col items-center mt-5'>
               <p>
                 <span className='font-extrabold'>Note: </span>Your account is
                 not confirmed, get your information in!
