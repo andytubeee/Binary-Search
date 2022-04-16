@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import UserCard from '../components/UserCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faDoorClosed,
+  faDoorOpen,
   faRightFromBracket,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
@@ -94,13 +96,20 @@ export default function Home({ pageProps }) {
       </Head>
       <Navbar signedIn={session} />
       {!session ? (
-        <div className='flex flex-col min-h-[600px] items-center mt-5 justify-center'>
-          <p className='font-bold mx-5 text-center'>
+        <div className='flex flex-col min-h-[600px] mx-auto max-w-[400px] my-5 justify-center'>
+          <p className='font-bold mx-5 my-3 text-center'>
             To see other users, please register or log in first.
           </p>
-          <div className='flex gap-3 flex-wrap justify-center content-center'>
+          <button
+            className='btn-blue mx-2 font-bold'
+            onClick={() => router.push('/register')}
+          >
+            <FontAwesomeIcon icon={faDoorOpen} className='text-white' />
+            &nbsp; Register
+          </button>
+          <div className='flex gap-3 flex-wrap justify-center content-center my-3'>
             <button
-              className='btn-pink mr-3 font-bold'
+              className='btn-pink min-w-[170px] mr-3 font-bold'
               onClick={() => router.push('/signin')}
             >
               <FontAwesomeIcon
