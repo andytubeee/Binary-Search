@@ -1,4 +1,4 @@
-import { getSession } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import Head from 'next/head';
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
@@ -8,11 +8,164 @@ import { getUserByEmail } from '../utils/backend/getUser';
 import { addToCollection } from '../utils/backend/insertDocument';
 import { AccountSettings } from '../components/AccountSettings';
 
-const RegisterSection = () => {
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
+
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const RegisterSection = ({ router }) => {
+  const [newUserInfo, setNewUserInfo] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const onRegisterClick = async () => {
+    if (
+      newUserInfo.firstName.length === 0 ||
+      newUserInfo.lastName.length === 0
+    ) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'First and last name are required!',
+      });
+    }
+    if (newUserInfo.email.length === 0) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Email is required!',
+      });
+    }
+    if (newUserInfo.password !== newUserInfo.confirmPassword) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Passwords do not match!',
+      });
+    }
+
+    const auth = getAuth();
+
+    createUserWithEmailAndPassword(
+      auth,
+      newUserInfo.email,
+      newUserInfo.password
+    )
+      .then((userCredential) => {
+        // Signed in
+        updateProfile(userCredential.user, {
+          displayName: `${capitalizeFirstLetter(
+            newUserInfo.firstName
+          )} ${capitalizeFirstLetter(newUserInfo.lastName)}`,
+        }).then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Account registered, please complete your profile',
+          }).then(() => {
+            signIn('credentials', {
+              redirect: false,
+              email: newUserInfo.email,
+              password: newUserInfo.password,
+            }).then(({ ok, error }) => {
+              if (ok) {
+                router.push('/profile');
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Something went wrong, please try again',
+                });
+              }
+            });
+          });
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: errorMessage,
+        });
+        // ..
+      });
+  };
   return (
     <>
-      <div>
-        <button>Register with Google</button>
+      <div className='mx-5 flex flex-col mt-5 justify-center items-center'>
+        <div className='flex flex-col w-[30%] mb-2 gap-2'>
+          <input
+            placeholder='First Name'
+            type='text'
+            className='rounded'
+            onChange={(e) =>
+              setNewUserInfo({ ...newUserInfo, firstName: e.target.value })
+            }
+          />
+          <input
+            placeholder='Last Name'
+            type='text'
+            className='rounded'
+            onChange={(e) =>
+              setNewUserInfo({ ...newUserInfo, lastName: e.target.value })
+            }
+          />
+          <input
+            placeholder='Email'
+            type='email'
+            className='rounded'
+            onChange={(e) =>
+              setNewUserInfo({ ...newUserInfo, email: e.target.value })
+            }
+          />
+          <input
+            placeholder='Password'
+            type='password'
+            className='rounded'
+            onChange={(e) =>
+              setNewUserInfo({ ...newUserInfo, password: e.target.value })
+            }
+          />
+          <input
+            placeholder='Confirm Password'
+            type='password'
+            className='rounded'
+            onChange={(e) =>
+              setNewUserInfo({
+                ...newUserInfo,
+                confirmPassword: e.target.value,
+              })
+            }
+          />
+          <button
+            className='rounded p-2 flex justify-center items-center gap-2 bg-bsPink1 hover:bg-bsPink2 text-white'
+            onClick={onRegisterClick}
+          >
+            Register{' '}
+          </button>{' '}
+        </div>
+        <button className='rounded p-2 flex w-[30%] justify-center items-center gap-2 bg-cyan-900 hover:bg-cyan-800 text-white'>
+          <Image
+            src='/assets/icon/icons8-google.svg'
+            height={20}
+            width={20}
+            alt='googleIcon'
+          />{' '}
+          Register with Google
+        </button>
       </div>
     </>
   );
@@ -20,6 +173,7 @@ const RegisterSection = () => {
 
 export default function RegisterPage({ pageProps }) {
   const { session } = pageProps;
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -28,7 +182,7 @@ export default function RegisterPage({ pageProps }) {
       <Navbar signedIn={session} />
       <h1 className='text-center text-3xl mt-4'>Register</h1>
       {session && <AccountSettings session={session.user} />}
-      {!session && <RegisterSection />}
+      {!session && <RegisterSection router={router} />}
     </>
   );
 }

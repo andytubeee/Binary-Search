@@ -80,6 +80,7 @@ const HomeMain = ({ session, otherUsers }) => {
 
 export default function Home({ pageProps }) {
   const { session, notConfirmed, otherUsers } = pageProps;
+  console.log(session);
   const router = useRouter();
   return (
     <>
@@ -89,7 +90,7 @@ export default function Home({ pageProps }) {
       <Navbar signedIn={session} />
       {!session ? (
         <div className='flex flex-col items-center mt-5 justify-center'>
-          <p className='font-bold mx-5'>
+          <p className='font-bold mx-5 text-center'>
             To see other users, please register or log in first.
           </p>
 
