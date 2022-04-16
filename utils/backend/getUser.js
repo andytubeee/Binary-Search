@@ -6,10 +6,19 @@ import {
   where,
 } from 'firebase/firestore';
 
-export const getUserByEmail = async (email) => {
+const getUserByEmail = async (email) => {
   const db = getFirestore();
   const userRef = collection(db, 'users');
   const q = query(userRef, where('email', '==', email));
   const qs = await getDocs(q);
   return qs.size == 1 ? qs.docs[0].data() : null;
 };
+
+const getOtherUsers = async (email) => {
+  const db = getFirestore();
+  const userRef = collection(db, 'users');
+  const q = query(userRef, where('email', '!=', email));
+  const qs = await getDocs(q);
+  return qs.docs.map((doc) => doc.data());
+};
+export { getUserByEmail, getOtherUsers };

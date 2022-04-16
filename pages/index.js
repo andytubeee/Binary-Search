@@ -3,11 +3,12 @@ import Image from 'next/image';
 
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
-import { getUserByEmail } from '../utils/backend/getUser';
+import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
 import { useRouter } from 'next/router';
+import UserCard from '../components/UserCard';
 
 export default function Home({ pageProps }) {
-  const { session, notConfirmed } = pageProps;
+  const { session, notConfirmed, otherUsers } = pageProps;
   const router = useRouter();
   return (
     <>
@@ -32,7 +33,9 @@ export default function Home({ pageProps }) {
         </button>
       ) : (
         <>
-          <h1>Hello {session?.user.name}</h1>
+          <h1 className='text-3xl text-center mt-4'>
+            Hello {session?.user.name}!
+          </h1>
 
           {notConfirmed && (
             <div>
@@ -48,14 +51,16 @@ export default function Home({ pageProps }) {
               </button>
             </div>
           )}
-          <button
-            className='text-xl font-extrabold text-white rounded p-2 bg-purple-700 hover:bg-purple-800'
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Sign Out
-          </button>
+          <h1 className='font-bold ml-10'>Browser Users</h1>
+          {otherUsers.map((user, i) => (
+            <UserCard
+              key={i}
+              firstName={user.firstName}
+              lastName={user.lastName}
+              skills={user.skills}
+              bio={user.bio}
+            />
+          ))}
         </>
       )}
     </>
@@ -66,7 +71,8 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const userEmail = session.user.email;
   const user = await getUserByEmail(userEmail);
+  const otherUsers = await getOtherUsers(userEmail);
   return {
-    props: { pageProps: { session, notConfirmed: !user } }, // will be passed to the page component as props
+    props: { pageProps: { session, notConfirmed: !user, otherUsers } }, // will be passed to the page component as props
   };
 }

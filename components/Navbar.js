@@ -46,7 +46,7 @@ export default function Navbar({ signedIn }) {
             </button>
           ) : (
             <button
-              className='text-white rounded p-2 bg-purple-700 hover:bg-purple-800'
+              className='text-white rounded p-2 bg-purple-700 hover:bg-purple-800 font-bold'
               onClick={() => signOut()}
             >
               Sign Out
