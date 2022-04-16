@@ -1,11 +1,79 @@
 import Head from 'next/head';
 import Image from 'next/image';
-
+import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
 import { useRouter } from 'next/router';
 import UserCard from '../components/UserCard';
+
+const HomeMain = ({ session, otherUsers }) => {
+  const [search, setSearch] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState(otherUsers);
+  const onSearchClick = () => {
+    if (search) {
+      setFilteredUsers(
+        filteredUsers.filter((user) => {
+          if (
+            user.firstName.toLowerCase().includes(search.toLowerCase()) ||
+            user.lastName.toLowerCase().includes(search.toLowerCase()) ||
+            user.bio.toLowerCase().includes(search.toLowerCase()) ||
+            user.skills
+              .map((s) => s.toLowerCase())
+              .includes(search.toLowerCase())
+          ) {
+            return true;
+          }
+          return false;
+        })
+      );
+    } else {
+      setFilteredUsers(otherUsers);
+    }
+  };
+  return (
+    <>
+      <div className='max-h-sc'>
+        <h1 className='text-3xl text-center my-4'>
+          Hello {session.user.name}!{' '}
+        </h1>
+        <div className='mx-5 p-2 flex flex-col'>
+          <h1 className='font-bold text-xl mb-2'>Browser Users</h1>
+          <div className='flex gap-3'>
+            <input
+              className='flex-1 border rounded pl-2 w-100'
+              placeholder='Search'
+              onChange={(e) => {
+                setSearch(e.target.value);
+                if (!e.target.value) {
+                  setFilteredUsers(otherUsers);
+                }
+              }}
+            />
+            <button
+              onClick={onSearchClick}
+              className='rounded bg-bsPink1 text-white p-2 hover:bg-bsBeige1 transition-all'
+            >
+              Search
+            </button>
+          </div>
+          <div className='overflow-scroll mt-5'>
+            {filteredUsers.map((user, i) => (
+              <UserCard
+                key={i}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                skills={user.skills}
+                bio={user.bio}
+                gender={user.gender}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default function Home({ pageProps }) {
   const { session, notConfirmed, otherUsers } = pageProps;
@@ -38,37 +106,7 @@ export default function Home({ pageProps }) {
           </button>
         </div>
       ) : (
-        <>
-          <h1 className='text-3xl text-center mt-4'>
-            Hello {session?.user.name}!
-          </h1>
-
-          {notConfirmed && (
-            <div className='flex justify-center flex-col items-center mt-5'>
-              <p>
-                <span className='font-extrabold'>Note: </span>Your account is
-                not confirmed, get your information in!
-              </p>
-              <button
-                className='border px-2 rounded my-3 text-white bg-gray-400 hover:bg-slate-100 hover:text-black'
-                onClick={() => router.push('/register')}
-              >
-                Confirm your information
-              </button>
-            </div>
-          )}
-          <h1 className='font-bold ml-10'>Browser Users</h1>
-          {otherUsers.map((user, i) => (
-            <UserCard
-              key={i}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              skills={user.skills}
-              bio={user.bio}
-              gender={user.gender}
-            />
-          ))}
-        </>
+        <HomeMain session={session} otherUsers={otherUsers} />
       )}
     </>
   );
