@@ -12,6 +12,7 @@ export default NextAuth({
     }),
   ],
   site: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     jwt: true,
   },
