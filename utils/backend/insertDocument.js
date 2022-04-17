@@ -8,6 +8,7 @@ import {
   updateDoc,
   setDoc,
   doc,
+  getDoc,
 } from 'firebase/firestore';
 
 const addToCollection = async (collectionName, doc) => {
@@ -32,4 +33,28 @@ const addFieldToCollection = async (collectionName, id, field, value) => {
   });
 };
 
-export { addToCollection, saveToCollection, addFieldToCollection };
+const likeProject = async (projectId, curUserId) => {
+  const userId = projectId.split('-')[0];
+  const db = getFirestore();
+  const docRef = doc(db, 'users', userId);
+  const docSnap = await getDoc(docRef);
+  const originalData = docSnap.data();
+  originalData = {
+    ...originalData,
+    projects: {
+      ...originalData.projects.map((project) => {
+        if (project.id !== projectId) {
+          return project;
+        }
+        return {
+          ...project,
+          likedBy: [...(originalData.projects.likedBy || []), curUserId],
+        };
+      }),
+    },
+  };
+  // console.log(docSnap.data().projects);
+  await setDoc(docRef, originalData);
+};
+
+export { addToCollection, saveToCollection, addFieldToCollection, likeProject };

@@ -8,13 +8,19 @@ import {
 } from '../../utils/backend/getUser';
 import Navbar from '../../components/Navbar';
 import { useRouter } from 'next/router';
-import { addFieldToCollection } from '../../utils/backend/insertDocument';
+import {
+  addFieldToCollection,
+  likeProject,
+} from '../../utils/backend/insertDocument';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 const ProjectCard = ({ project, user, router }) => {
-  const likeProject = () => {};
+  const likeProjectClick = () => {
+    // console.log(user);
+    likeProject(project.id, user.id);
+  };
   return (
     <div className='bg-bsBlue min-h-[50%] min-w-[300px] text-white p-3 rounded-xl m-3'>
       <h1 className='text-2xl font-bold'>{project.name}</h1>
@@ -26,7 +32,7 @@ const ProjectCard = ({ project, user, router }) => {
           <p key={i}>{stack}</p>
         ))}
       </div>
-      <button className='btn-red mt-3' onClick={likeProject}>
+      <button className='btn-red mt-3' onClick={likeProjectClick}>
         <FontAwesomeIcon icon={faThumbsUp} /> &nbsp; Like
       </button>
     </div>
@@ -53,7 +59,7 @@ export default function ProjectPage({ pageProps }) {
         <div className='flex items-start justify-center flex-wrap'>
           {projects ? (
             projects.map((project, i) => (
-              <ProjectCard project={project} key={i} />
+              <ProjectCard project={project} user={curUser} key={i} />
             ))
           ) : (
             <h1 className='text-center mx-5 my-5'>
@@ -71,10 +77,8 @@ export async function getServerSideProps(context) {
   const userEmail = session.user.email;
   const curUser =
     userEmail !== undefined ? await getUserByEmail(userEmail) : null;
-  //   console.log();
   const theOtherUser = await getUserByID(context.query.uid);
-  console.log(theOtherUser);
-  // const userProjects =
+  const curId = await getUserDocId(userEmail);
   if (!session)
     return {
       redirect: {
@@ -85,7 +89,11 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      pageProps: { session, curUser, projects: theOtherUser?.projects || null },
+      pageProps: {
+        session,
+        curUser: { ...curUser, id: curId },
+        projects: theOtherUser?.projects || null,
+      },
     },
   };
 }
