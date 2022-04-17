@@ -72,7 +72,7 @@ export default function ProjectPage({ pageProps }) {
       )}
       {curUser && (
         <div className='flex items-start justify-center flex-wrap'>
-          {projects ? (
+          {projects.length > 0 ? (
             projects.map((project, i) => (
               <ProjectCard
                 project={project}

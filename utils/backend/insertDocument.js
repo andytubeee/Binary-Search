@@ -59,7 +59,6 @@ const likeProject = async (projectId, curUserId) => {
       }),
     ],
   };
-  // console.log(originalData);
   await setDoc(docRef, originalData);
 };
 
