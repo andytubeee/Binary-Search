@@ -14,11 +14,11 @@ export default function UserCard({ user }) {
   const { firstName, lastName, bio, skills, gender } = user;
   const router = useRouter();
   return (
-    <div className='py-4 rounded-lg border-bsBlue border-2 flex flex-col px-4 my-3'>
-      <h1>
+    <div className='py-4 rounded-lg border-bsBlue border-2 flex flex-col px-4 my-5'>
+      <h1 className='text-2xl font-bold'>
         {firstName} {lastName} <span className='italic'>({gender[0]})</span>
       </h1>
-      <h2 className='italic'>{bio}</h2>
+      <h2 className='italic mb-3'> {bio}</h2>
       <p className='font-bold'>Skills</p>
       <ul>
         {skills.map((skill, i) => (
