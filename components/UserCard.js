@@ -1,16 +1,18 @@
 import {
   faCircleNodes,
+  faCode,
   faCommentDots,
   faHeartbeat,
   faShield,
   faShieldCat,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 export default function UserCard({ user }) {
-  console.log(user);
   const { firstName, lastName, bio, skills, gender } = user;
+  const router = useRouter();
   return (
     <div className='py-4 rounded-lg border-bsBlue border-2 flex flex-col px-4 my-3'>
       <h1>
@@ -31,6 +33,12 @@ export default function UserCard({ user }) {
         </button>
         <button className='btn-orange mr-2'>
           <FontAwesomeIcon icon={faCommentDots} className='' /> Send Message
+        </button>
+        <button
+          className='btn-cyan mr-2'
+          onClick={() => router.push(`/project/${user.id}`)}
+        >
+          <FontAwesomeIcon icon={faCode} className='' /> See Projects
         </button>
       </div>
     </div>

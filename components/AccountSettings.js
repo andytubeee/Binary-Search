@@ -103,6 +103,13 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
       });
     }
   };
+  const saveStack = (newSkill) => {
+    setUserInfo({
+      ...userInfo,
+      skills: [...userInfo.skills, newSkill],
+    });
+    skillInputRef.current.value = '';
+  };
   return (
     <>
       <div className='flex flex-col items-center my-4 py-2'>
@@ -186,6 +193,11 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
               placeholder='Enter your Skill'
               ref={skillInputRef}
               className='rounded pl-2 mr-2 border-blue-400 border-2'
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  saveStack(skillInputRef.current.value);
+                }
+              }}
             />
             <button
               className=' bg-bsBlue text-white rounded-md px-2 hover:translate-x-1 duration-500 transition-all'
@@ -196,11 +208,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
                 } else if (newSkill === '') {
                   return Swal.fire('Oops!', "Skill can't be empty", 'error');
                 }
-                setUserInfo({
-                  ...userInfo,
-                  skills: [...userInfo.skills, newSkill],
-                });
-                skillInputRef.current.value = '';
+                saveStack(newSkill);
               }}
             >
               Add Skill

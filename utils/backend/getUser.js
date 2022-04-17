@@ -1,5 +1,7 @@
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -31,4 +33,27 @@ const getUserDocId = async (email) => {
   const qs = await getDocs(q);
   return qs.size == 1 ? qs.docs[0].id : null;
 };
-export { getUserByEmail, getOtherUsers, getUserDocId };
+
+const getDocField = async (collection, uid, field) => {
+  const db = getFirestore();
+  const userRef = collection(db, collection);
+  const q = query(userRef, where('id', '==', uid));
+  const qs = await getDocs(q);
+  return qs.size == 1 ? qs.docs[0][field] : null;
+};
+
+const getUserByID = async (id) => {
+  const db = getFirestore();
+  const docRef = doc(db, 'users', id);
+  const docSnap = await getDoc(docRef);
+
+  return docSnap.exists() ? docSnap.data() : null;
+};
+
+export {
+  getUserByEmail,
+  getOtherUsers,
+  getUserDocId,
+  getDocField,
+  getUserByID,
+};

@@ -58,9 +58,10 @@ const AddProject = ({ user, router }) => {
     if (pInfo.name.length > 0 && pInfo.description.length > 0) {
       const docId = await getUserDocId(user.email);
       const curProjects = user.projects || [];
+      const projId = docId.concat('-', curProjects.length);
       await addFieldToCollection('users', docId, 'projects', [
         ...curProjects,
-        pInfo,
+        { ...pInfo, id: projId },
       ])
         .then(() => {
           Swal.fire({
@@ -205,14 +206,15 @@ export default function ProjectPage({ pageProps }) {
       <div className='flex flex-col md:flex-row mx-5 gap-10'>
         <AddProject user={user} router={router} />
         <div className='flex items-start flex-wrap'>
-          {user.projects.map((project, i) => (
-            <ProjectCard
-              project={project}
-              key={i}
-              user={user}
-              router={router}
-            />
-          ))}
+          {user.projects &&
+            user.projects.map((project, i) => (
+              <ProjectCard
+                project={project}
+                key={i}
+                user={user}
+                router={router}
+              />
+            ))}
         </div>
       </div>
     </>
