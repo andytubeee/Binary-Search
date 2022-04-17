@@ -21,14 +21,13 @@ import { useRouter } from 'next/router';
 export default function Navbar({ signedIn }) {
   const router = useRouter();
 
-  const MenuItem = ({ label, direct = '', icon = null, iconPos = 'l' }) => (
+  const MenuItem = ({ label, direct = '', icon = null }) => (
     <button
-      className='text-white hover:text-bsPink2 hover:mb-2 transition-all duration-200'
+      className='group flex items-center text-white hover:text-bsPink2 transition-all duration-200 hover:scale-110'
       onClick={() => router.push(`/${direct}`)}
     >
-      {icon && iconPos === 'l' && <FontAwesomeIcon icon={icon} />}&nbsp;
-      {label}&nbsp;
-      {icon && iconPos === 'r' && <FontAwesomeIcon icon={icon} />}
+      {icon && <FontAwesomeIcon icon={icon} />}&nbsp;
+      <p className='opacity-0 group-hover:opacity-100 '>{label}&nbsp;</p>
     </button>
   );
 
@@ -36,7 +35,7 @@ export default function Navbar({ signedIn }) {
     <>
       <nav className='bg-bsBlue flex flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
         <div className='flex gap-5 flex-col md:flex-row'>
-          <a className='flex gap-2 items-center text-white'>
+          <a className='flex gap-2 mr-5 items-center text-white'>
             <FontAwesomeIcon icon={faHeart} className='text-bsPink1 text-3xl' />
             <span
               className='text-2xl cursor-pointer'
@@ -45,7 +44,7 @@ export default function Navbar({ signedIn }) {
               Binary Search
             </span>
           </a>
-          <div className='flex gap-4' id='mobile-menu'>
+          <div className='flex gap-6' id='mobile-menu'>
             <MenuItem label='Home' icon={faHome} iconPos='l' />
             <MenuItem label='About' direct='about' icon={faCircleInfo} />
           </div>
@@ -74,24 +73,9 @@ export default function Navbar({ signedIn }) {
             </div>
           ) : (
             <div className='flex gap-4'>
-              <MenuItem
-                label='Chat'
-                direct='chat'
-                icon={faCommentAlt}
-                iconPos='l'
-              />
-              <MenuItem
-                label='Project'
-                direct='project'
-                icon={faCode}
-                iconPos='l'
-              />
-              <MenuItem
-                label='Profile'
-                direct='profile'
-                icon={faAddressBook}
-                iconPos='r'
-              />
+              <MenuItem label='Chat' direct='chat' icon={faCommentAlt} />
+              <MenuItem label='Project' direct='project' icon={faCode} />
+              <MenuItem label='Profile' direct='profile' icon={faAddressBook} />
               <button
                 className='btn bg-purple-700 hover:bg-purple-800 font-bold'
                 onClick={() => signOut()}
