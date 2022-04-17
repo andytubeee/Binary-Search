@@ -91,6 +91,11 @@ const removeLikeProject = async (projectId, curUserId) => {
   await setDoc(docRef, originalData);
 };
 
+const generateChatroom = (uId1, uId2) => {
+  // Let uId1 be current user and uId2 be the other user
+  
+};
+
 export {
   addToCollection,
   saveToCollection,

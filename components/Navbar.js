@@ -23,11 +23,11 @@ export default function Navbar({ signedIn }) {
 
   const MenuItem = ({ label, direct = '', icon = null }) => (
     <button
-      className='group flex scale-125 items-center text-white hover:text-bsPink2 transition-all duration-200 hover:scale-[1.3]'
+      className='group flex scale-125 items-center text-white hover:text-bsPink2 transition-all group-hover:scale-[1.3] duration-200'
       onClick={() => router.push(`/${direct}`)}
     >
       {icon && <FontAwesomeIcon icon={icon} />}&nbsp;
-      <p className='hidden group-hover:block '>{label}&nbsp;</p>
+      <p className='hidden group-hover:block'>{label}&nbsp;</p>
     </button>
   );
 

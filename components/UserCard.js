@@ -9,10 +9,22 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { getFirestore, collection } from 'firebase/firestore';
 
 export default function UserCard({ user }) {
   const { firstName, lastName, bio, skills, gender } = user;
   const router = useRouter();
+  const db = getFirestore();
+
+  const [snapshot, loading, error] = useCollection(
+    collection(db, 'chatRooms'),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
+  );
+
+  const onSendMessageBtnClick = async () => {};
   return (
     <div className='py-4 rounded-lg border-bsBlue border-2 flex flex-col px-4 my-5'>
       <h1 className='text-2xl font-bold'>
@@ -31,7 +43,7 @@ export default function UserCard({ user }) {
         <button className='btn-orange mr-3'>
           <FontAwesomeIcon icon={faCircleNodes} className='' /> Show Interest
         </button>
-        <button className='btn-orange mr-2'>
+        <button className='btn-orange mr-2' onClick={onSendMessageBtnClick}>
           <FontAwesomeIcon icon={faCommentDots} className='' /> Send Message
         </button>
         <button
