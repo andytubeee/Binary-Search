@@ -44,7 +44,7 @@ export default function Navbar({ signedIn }) {
               Binary Search
             </span>
           </a>
-          <div className='flex gap-6' id='mobile-menu'>
+          <div className='flex gap-8' id='mobile-menu'>
             <MenuItem label='Home' icon={faHome} iconPos='l' />
             <MenuItem label='About' direct='about' icon={faCircleInfo} />
           </div>
@@ -72,7 +72,7 @@ export default function Navbar({ signedIn }) {
               </button>
             </div>
           ) : (
-            <div className='flex gap-4'>
+            <div className='flex gap-10'>
               <MenuItem label='Chat' direct='chat' icon={faCommentAlt} />
               <MenuItem label='Project' direct='project' icon={faCode} />
               <MenuItem label='Profile' direct='profile' icon={faAddressBook} />
