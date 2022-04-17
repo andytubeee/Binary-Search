@@ -7,7 +7,7 @@ const funnyPhrases = [
   'just like the bugs in my code',
   "I don't want to look for it",
   'I encourage you to create it yourself',
-  ''
+  "not on me this time, that's on you",
 ];
 
 const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -23,7 +23,7 @@ export default function NotFoundPage() {
       <Head>
         <title>404 Not Found</title>
       </Head>
-      <Error errorMsg={`Page not found, ${p}`} />
+      <Error errorMsg={`Page not found, ${p}.`} />
     </>
   );
 }
