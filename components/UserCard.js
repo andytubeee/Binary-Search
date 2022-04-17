@@ -11,20 +11,24 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { getFirestore, collection } from 'firebase/firestore';
+import { generateChatroom } from '../utils/backend/insertDocument';
 
-export default function UserCard({ user }) {
-  const { firstName, lastName, bio, skills, gender } = user;
+export default function UserCard({ user, currentUser }) {
+  const { firstName, lastName, bio, skills, gender, id } = user;
   const router = useRouter();
-  const db = getFirestore();
+  // const db = getFirestore();
 
-  const [snapshot, loading, error] = useCollection(
-    collection(db, 'chatRooms'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  );
+  // const [snapshot, loading, error] = useCollection(
+  //   collection(db, 'chatRooms'),
+  //   {
+  //     snapshotListenOptions: { includeMetadataChanges: true },
+  //   }
+  // );
 
-  const onSendMessageBtnClick = async () => {};
+  const onSendMessageBtnClick = async () => {
+    await generateChatroom(currentUser.id, id);
+    // console.log(currentUser);
+  };
   return (
     <div className='py-4 rounded-lg border-bsBlue border-2 flex flex-col px-4 my-5'>
       <h1 className='text-2xl font-bold'>
@@ -48,7 +52,7 @@ export default function UserCard({ user }) {
         </button>
         <button
           className='btn-cyan mr-2'
-          onClick={() => router.push(`/project/${user.id}`)}
+          onClick={() => router.push(`/project/${id}`)}
         >
           <FontAwesomeIcon icon={faCode} className='' /> See Projects
         </button>

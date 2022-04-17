@@ -3,17 +3,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AccountSettings } from '../components/AccountSettings';
 import Navbar from '../components/Navbar';
-import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
+import {
+  getActiveChatRooms,
+  getOtherUsers,
+  getUserByEmail,
+  getUserDocId,
+} from '../utils/backend/getUser';
 
+const ChatWindow = ({ userId }) => {
+  // userId is the other user's id
+  if (!userId) return null;
+};
 export default function ChatPage({ pageProps }) {
-  const { session, notConfirmed, user } = pageProps;
+  const { session, user, chats } = pageProps;
   const router = useRouter();
-  const ChatWindow = ({ userId }) => {
-    if (!userId) return null;
-  };
+
   const ChatUserColumn = () => {
     return (
       <div className='p-3 flex flex-col'>
@@ -22,6 +29,12 @@ export default function ChatPage({ pageProps }) {
             <FontAwesomeIcon icon={faUserAlt} /> &nbsp; Find a User
           </button>
         </div>
+        {chats &&
+          chats.map((c, i) => (
+            <button className='border rounded px-2 my-2' key={i}>
+              {c.name}
+            </button>
+          ))}
       </div>
     );
   };
@@ -32,7 +45,7 @@ export default function ChatPage({ pageProps }) {
       </Head>
       <div className='overflow-hidden min-h-screen flex flex-col'>
         <Navbar signedIn={session} />
-        {notConfirmed ? (
+        {!user ? (
           <AccountSettings session={session.user} />
         ) : (
           <>
@@ -56,10 +69,7 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const userEmail = session?.user?.email;
   const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
-  const otherUsers = await getOtherUsers(
-    userEmail !== undefined ? userEmail : ''
-  );
-
+  const id = await getUserDocId(userEmail);
   if (!session)
     return {
       redirect: {
@@ -75,8 +85,11 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
+  const chatPromise = getActiveChatRooms(id).then(async (resArr) => {
+    return await Promise.all(resArr).then((value) => value);
+  });
+  const chats = await chatPromise.then((chats) => chats);
   return {
-    props: { pageProps: { session, notConfirmed: !user, otherUsers } },
+    props: { pageProps: { session, user: { ...user, id }, chats } },
   };
 }

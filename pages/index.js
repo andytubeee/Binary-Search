@@ -3,7 +3,11 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
-import { getOtherUsers, getUserByEmail } from '../utils/backend/getUser';
+import {
+  getOtherUsers,
+  getUserByEmail,
+  getUserDocId,
+} from '../utils/backend/getUser';
 import { useRouter } from 'next/router';
 import UserCard from '../components/UserCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +18,7 @@ import {
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 
-const HomeMain = ({ session, otherUsers }) => {
+const HomeMain = ({ session, otherUsers, curUser }) => {
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState(otherUsers);
   const onSearchClick = () => {
@@ -70,7 +74,7 @@ const HomeMain = ({ session, otherUsers }) => {
           </div>
           <div className='overflow-scroll mt-5'>
             {filteredUsers.map((user, i) => (
-              <UserCard key={i} user={user} />
+              <UserCard key={i} user={user} currentUser={curUser} />
             ))}
           </div>
         </div>
@@ -80,7 +84,7 @@ const HomeMain = ({ session, otherUsers }) => {
 };
 
 export default function Home({ pageProps }) {
-  const { session, notConfirmed, otherUsers } = pageProps;
+  const { session, user, otherUsers } = pageProps;
   const router = useRouter();
   return (
     <>
@@ -88,7 +92,7 @@ export default function Home({ pageProps }) {
         <title>Binary Search</title>
       </Head>
       <Navbar signedIn={session} />
-      {!session ? (
+      {!user || !session ? (
         <div className='flex flex-col min-h-[600px] mx-auto max-w-[400px] my-5 justify-center'>
           <p className='font-bold mx-5 my-3 text-center'>
             To see other users, please register or log in first.
@@ -128,7 +132,7 @@ export default function Home({ pageProps }) {
           </div>
         </div>
       ) : (
-        <HomeMain session={session} otherUsers={otherUsers} />
+        <HomeMain session={session} otherUsers={otherUsers} curUser={user} />
       )}
     </>
   );
@@ -141,7 +145,8 @@ export async function getServerSideProps(context) {
   const otherUsers = await getOtherUsers(
     userEmail !== undefined ? userEmail : ''
   );
+  const uid = await getUserDocId(userEmail);
   return {
-    props: { pageProps: { session, notConfirmed: !user, otherUsers } },
+    props: { pageProps: { session, user: { ...user, id: uid }, otherUsers } },
   };
 }

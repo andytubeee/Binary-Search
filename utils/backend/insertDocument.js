@@ -91,9 +91,12 @@ const removeLikeProject = async (projectId, curUserId) => {
   await setDoc(docRef, originalData);
 };
 
-const generateChatroom = (uId1, uId2) => {
+const generateChatroom = async (uId1, uId2) => {
   // Let uId1 be current user and uId2 be the other user
-  
+  const db = getFirestore();
+  await setDoc(doc(db, 'chatRooms', uId1 + '-' + uId2), {
+    messages: [],
+  });
 };
 
 export {
@@ -102,4 +105,5 @@ export {
   addFieldToCollection,
   likeProject,
   removeLikeProject,
+  generateChatroom,
 };

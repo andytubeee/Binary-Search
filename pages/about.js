@@ -34,6 +34,7 @@ export default function AboutPage({ pageProps }) {
           height={500}
           width={500}
           alt='icon1'
+          draggable={false}
         />
         <div>
           <h1 className='text-3xl font-bold italic text-center'>{slogan}</h1>
