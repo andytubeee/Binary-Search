@@ -32,4 +32,7 @@
   .btn-orange {
     @apply btn bg-orange-300 hover:bg-orange-400 text-white;
   }
+  .btn-red {
+    @apply btn bg-red-500 hover:bg-red-600 text-white;
+  }
 }

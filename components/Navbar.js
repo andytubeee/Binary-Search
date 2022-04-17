@@ -12,6 +12,7 @@ import {
   faComment,
   faCommentAlt,
   faCircleInfo,
+  faCode,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -77,6 +78,12 @@ export default function Navbar({ signedIn }) {
                 label='Chat'
                 direct='chat'
                 icon={faCommentAlt}
+                iconPos='l'
+              />
+              <MenuItem
+                label='Project'
+                direct='project'
+                icon={faCode}
                 iconPos='l'
               />
               <MenuItem

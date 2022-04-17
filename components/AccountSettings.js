@@ -188,7 +188,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
               className='rounded pl-2 mr-2 border-blue-400 border-2'
             />
             <button
-              className=' bg-bsBlue text-white rounded-md px-2'
+              className=' bg-bsBlue text-white rounded-md px-2 hover:translate-x-1 duration-500 transition-all'
               onClick={() => {
                 const newSkill = skillInputRef.current.value;
                 if (userInfo.skills.includes(newSkill)) {
@@ -211,10 +211,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
               ))}
             </div>
           </div>
-          <button
-            className='rounded bg-pink-400 text-white px-4 py-2 hover:bg-bsPink2'
-            onClick={validate}
-          >
+          <button className='btn-pink' onClick={validate}>
             Save
           </button>
         </div>

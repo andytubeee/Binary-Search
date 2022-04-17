@@ -22,4 +22,14 @@ const saveToCollection = async (collectionName, newDoc, id) => {
   const docRef = doc(db, collectionName, id);
   await setDoc(docRef, newDoc);
 };
-export { addToCollection, saveToCollection };
+
+const addFieldToCollection = async (collectionName, id, field, value) => {
+  const db = getFirestore();
+  const userRef = collection(db, collectionName);
+  const docRef = doc(db, collectionName, id);
+  await updateDoc(docRef, {
+    [field]: value,
+  });
+};
+
+export { addToCollection, saveToCollection, addFieldToCollection };

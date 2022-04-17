@@ -5,6 +5,9 @@ import { getUserByEmail } from '../utils/backend/getUser';
 import Navbar from '../components/Navbar';
 import { AccountSettings } from '../components/AccountSettings';
 import { useRouter } from 'next/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+
 
 const UserProfile = ({ user, router }) => {
   return (
@@ -30,11 +33,8 @@ const UserProfile = ({ user, router }) => {
           ))}
         </div>
         <h1 className='font-bold text-lg my-3'>Explore the App</h1>
-        <button
-          className='border rounded p-2 bg-blue-300 text-white'
-          onClick={() => router.push('/')}
-        >
-          Find Users
+        <button className='btn-blue' onClick={() => router.push('/')}>
+          <FontAwesomeIcon icon={faUser} /> &nbsp; Find Users
         </button>
       </div>
     </>
