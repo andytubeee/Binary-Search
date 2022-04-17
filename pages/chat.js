@@ -59,6 +59,23 @@ export async function getServerSideProps(context) {
   const otherUsers = await getOtherUsers(
     userEmail !== undefined ? userEmail : ''
   );
+
+  if (!session)
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false,
+      },
+    };
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/profile',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: { pageProps: { session, notConfirmed: !user, otherUsers } },
   };
