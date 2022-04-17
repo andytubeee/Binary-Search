@@ -11,26 +11,13 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   const firstName = user.name.split(' ')[0];
   const lastName = user.name.split(' ').slice(1).join(' ');
   const [userInfo, setUserInfo] = useState({
-    firstName,
-    lastName,
+    firstName: fb ? fb.firstName : firstName,
+    lastName: fb ? fb.lastName : lastName,
     email: user.email,
-    skills: [],
-    gender: '',
-    bio: '',
+    skills: fb ? fb.skills : [],
+    gender: fb ? fb.gender : '',
+    bio: fb ? fb.bio : '',
   });
-
-  useEffect(() => {
-    if (fb) {
-      setUserInfo({
-        firstName: fb.firstName,
-        lastName: fb.lastName,
-        email: fb.email,
-        skills: fb.skills,
-        gender: fb.gender,
-        bio: fb.bio,
-      });
-    }
-  }, [fb]);
 
   const skillInputRef = useRef();
   const router = useRouter();

@@ -6,8 +6,11 @@ import Navbar from '../components/Navbar';
 import { AccountSettings } from '../components/AccountSettings';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-
+import {
+  faCode,
+  faCommentDots,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 
 const UserProfile = ({ user, router }) => {
   return (
@@ -33,9 +36,17 @@ const UserProfile = ({ user, router }) => {
           ))}
         </div>
         <h1 className='font-bold text-lg my-3'>Explore the App</h1>
-        <button className='btn-blue' onClick={() => router.push('/')}>
-          <FontAwesomeIcon icon={faUser} /> &nbsp; Find Users
-        </button>
+        <div className='flex flex-wrap gap-4'>
+          <button className='btn-blue' onClick={() => router.push('/')}>
+            <FontAwesomeIcon icon={faUser} /> &nbsp; Find Users
+          </button>
+          <button className='btn-blue' onClick={() => router.push('/chat')}>
+            <FontAwesomeIcon icon={faCommentDots} /> &nbsp; Chat
+          </button>
+          <button className='btn-blue' onClick={() => router.push('/project')}>
+            <FontAwesomeIcon icon={faCode} /> &nbsp; Projects
+          </button>
+        </div>
       </div>
     </>
   );
