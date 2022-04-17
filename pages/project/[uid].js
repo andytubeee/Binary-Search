@@ -11,16 +11,26 @@ import { useRouter } from 'next/router';
 import {
   addFieldToCollection,
   likeProject,
+  removeLikeProject,
 } from '../../utils/backend/insertDocument';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 const ProjectCard = ({ project, user, router }) => {
   const likeProjectClick = () => {
     // console.log(user);
-    likeProject(project.id, user.id);
+    if (!alreadyLiked) {
+      likeProject(project.id, user.id).then(() => {
+        router.reload(window.location.pathname);
+      });
+    } else {
+      removeLikeProject(project.id, user.id).then(() => {
+        router.reload(window.location.pathname);
+      });
+    }
   };
+  const alreadyLiked = project?.likedBy?.includes(user.id);
   return (
     <div className='bg-bsBlue min-h-[50%] min-w-[300px] text-white p-3 rounded-xl m-3'>
       <h1 className='text-2xl font-bold'>{project.name}</h1>
@@ -32,8 +42,13 @@ const ProjectCard = ({ project, user, router }) => {
           <p key={i}>{stack}</p>
         ))}
       </div>
+      <h1>
+        <p className='font-bold mt-3'>Likes: </p>
+        {project?.likedBy?.length || 0}
+      </h1>
       <button className='btn-red mt-3' onClick={likeProjectClick}>
-        <FontAwesomeIcon icon={faThumbsUp} /> &nbsp; Like
+        <FontAwesomeIcon icon={alreadyLiked ? faThumbsDown : faThumbsUp} />{' '}
+        &nbsp; {alreadyLiked ? 'Remove Like' : 'Like'}
       </button>
     </div>
   );
@@ -59,7 +74,12 @@ export default function ProjectPage({ pageProps }) {
         <div className='flex items-start justify-center flex-wrap'>
           {projects ? (
             projects.map((project, i) => (
-              <ProjectCard project={project} user={curUser} key={i} />
+              <ProjectCard
+                project={project}
+                router={router}
+                user={curUser}
+                key={i}
+              />
             ))
           ) : (
             <h1 className='text-center mx-5 my-5'>
@@ -92,7 +112,7 @@ export async function getServerSideProps(context) {
       pageProps: {
         session,
         curUser: { ...curUser, id: curId },
-        projects: theOtherUser?.projects || null,
+        projects: theOtherUser?.projects || [],
       },
     },
   };

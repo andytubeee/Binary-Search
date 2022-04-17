@@ -185,6 +185,10 @@ const ProjectCard = ({ project, user, router }) => {
           <p key={i}>{stack}</p>
         ))}
       </div>
+      <h1>
+        <p className='font-bold mt-3'>Likes: </p>
+        {project?.likedBy?.length || 0}
+      </h1>
       <button className='btn-red mt-3' onClick={deleteProject}>
         Delete
       </button>

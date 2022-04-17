@@ -39,22 +39,63 @@ const likeProject = async (projectId, curUserId) => {
   const docRef = doc(db, 'users', userId);
   const docSnap = await getDoc(docRef);
   const originalData = docSnap.data();
+
   originalData = {
     ...originalData,
-    projects: {
-      ...originalData.projects.map((project) => {
+    projects: [
+      ...(originalData.projects || []).map((project) => {
         if (project.id !== projectId) {
           return project;
         }
         return {
           ...project,
-          likedBy: [...(originalData.projects.likedBy || []), curUserId],
+          likedBy: [
+            ...(originalData.projects.filter(
+              (project) => project.id === projectId
+            )[0].likedBy || []),
+            curUserId,
+          ],
         };
       }),
-    },
+    ],
   };
-  // console.log(docSnap.data().projects);
+  // console.log(originalData);
   await setDoc(docRef, originalData);
 };
 
-export { addToCollection, saveToCollection, addFieldToCollection, likeProject };
+const removeLikeProject = async (projectId, curUserId) => {
+  const userId = projectId.split('-')[0];
+  const db = getFirestore();
+  const docRef = doc(db, 'users', userId);
+  const docSnap = await getDoc(docRef);
+  const originalData = docSnap.data();
+
+  originalData = {
+    ...originalData,
+    projects: [
+      ...(originalData.projects || []).map((project) => {
+        if (project.id !== projectId) {
+          return project;
+        }
+        return {
+          ...project,
+          likedBy: [
+            ...originalData.projects
+              .filter((project) => project.id === projectId)[0]
+              .likedBy.filter((user) => user !== curUserId),
+          ],
+        };
+      }),
+    ],
+  };
+  // console.log(originalData);
+  await setDoc(docRef, originalData);
+};
+
+export {
+  addToCollection,
+  saveToCollection,
+  addFieldToCollection,
+  likeProject,
+  removeLikeProject,
+};
