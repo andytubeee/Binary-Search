@@ -53,19 +53,27 @@ const ChatWindow = ({ chat, curUser }) => {
       // console.log(chat.id);
     }
   };
+  const deleteMessage = async () => {};
   const chatInput = React.createRef();
-  const Message = ({ message }) => (
-    <div
-      className={`my-2 ${
-        message.userId === curUser.id
-          ? 'self-end bg-bsBlue '
-          : 'self-start bg-gray-400'
-      }  text-white rounded px-3 py-1`}
-    >
-      <p className='text-xs'>{message.name}</p>
-      <p>{message.message}</p>
-    </div>
-  );
+  const Message = ({ message }) => {
+    return (
+      <div
+        className={`my-2 ${
+          message.userId === curUser.id
+            ? 'self-end bg-bsBlue '
+            : 'self-start bg-gray-400'
+        }  text-white rounded px-3 py-1 min-w-[130px] max-w-[50%]`}
+      >
+        {message.userId === curUser.id && (
+          <button className='float-right' onClick={deleteMessage}>
+            x
+          </button>
+        )}
+        <p className='text-xs'>{message.name}</p>
+        <p>{message.message}</p>
+      </div>
+    );
+  };
   return (
     <div className='h-full relative p-3'>
       <div className='flex min-w-[95%] md:min-w-[98%] gap-3 bottom-2 absolute flex-wrap'>
@@ -80,6 +88,7 @@ const ChatWindow = ({ chat, curUser }) => {
               sendChat();
             }
           }}
+          multiple={true}
         />
         <button
           className={disableSendBtn ? 'btn-disabled' : 'btn-orange'}
@@ -88,7 +97,7 @@ const ChatWindow = ({ chat, curUser }) => {
           <FontAwesomeIcon icon={faPaperPlane} /> &nbsp; Send
         </button>
       </div>
-      <div className='flex-1 overflow-y-scroll flex flex-col max-h-[82%] lg:max-h-[90%]'>
+      <div className='flex-1 overflow-y-scroll no-scrollbar flex flex-col max-h-[81%] sm:max-h-[90%] lg:max-h-[90%]'>
         {chatSnapshot.messages &&
           chatSnapshot.messages.map((msg, i) => (
             <Message message={msg} key={i} />
@@ -149,7 +158,7 @@ export default function ChatPage({ pageProps }) {
               <div className='flex h-[68vh] md:h-[79vh] border rounded flex-[0.5] lg:flex-[0.3]'>
                 <ChatUserColumn />
               </div>
-              <div className='flex flex-1 border flex-col rounded'>
+              <div className='flex flex-1 border flex-col h-[68vh] md:h-[79vh] rounded'>
                 <ChatWindow
                   chat={
                     chats && chats.filter((c) => c.oUid === activeChatId)[0]
