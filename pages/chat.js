@@ -88,7 +88,7 @@ const ChatWindow = ({ chat, curUser }) => {
           <FontAwesomeIcon icon={faPaperPlane} /> &nbsp; Send
         </button>
       </div>
-      <div className='flex-1 overflow-y-scroll flex flex-col'>
+      <div className='flex-1 overflow-y-scroll flex flex-col max-h-[82%] lg:max-h-[90%]'>
         {chatSnapshot.messages &&
           chatSnapshot.messages.map((msg, i) => (
             <Message message={msg} key={i} />
