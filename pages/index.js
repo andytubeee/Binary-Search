@@ -48,6 +48,12 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
         <h1 className='text-3xl text-center my-4'>
           Hello {session.user.name}!{' '}
         </h1>
+        {curUser.id === null && (
+          <h1 className='text-center text-red-600'>
+            <span className='font-bold'>Note: </span>
+            Please complete your profile...
+          </h1>
+        )}
         <div className='mx-5 p-2 flex flex-col'>
           <h1 className='font-bold text-xl mb-2'>Browser Users</h1>
           <div className='flex gap-3'>
@@ -98,7 +104,7 @@ export default function Home({ pageProps }) {
             To see other users, please register or log in first.
           </p>
           <button
-            className='btn-blue mx-2 font-bold'
+            className='btn-blue mx-auto font-bold w-[200px] lg:w-[385px]'
             onClick={() => router.push('/register')}
           >
             <FontAwesomeIcon icon={faDoorOpen} className='text-white' />

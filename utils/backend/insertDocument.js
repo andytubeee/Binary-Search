@@ -94,9 +94,12 @@ const removeLikeProject = async (projectId, curUserId) => {
 const generateChatroom = async (uId1, uId2) => {
   // Let uId1 be current user and uId2 be the other user
   const db = getFirestore();
-  await setDoc(doc(db, 'chatRooms', uId1 + '-' + uId2), {
-    messages: [],
-  });
+  const chatId = uId1 + '-' + uId2;
+  const docRef = await getDoc(doc(db, 'chatRooms', chatId));
+  if (!docRef.exists())
+    await setDoc(doc(db, 'chatRooms', chatId), {
+      messages: [],
+    });
 };
 
 const sendChatToFirebase = async (chatId, message) => {
@@ -109,6 +112,23 @@ const sendChatToFirebase = async (chatId, message) => {
   });
 };
 
+const showInterestToUser = async (userId /* The other user */, curUserId) => {
+  // curUserId is interested in userId
+  const db = getFirestore();
+  const curUserDocRef = await getDoc(doc(db, 'users', curUserId));
+  const otherUserDocRef = await getDoc(doc(db, 'users', userId));
+  const curUserData = curUserDocRef.data();
+  const otherUserData = otherUserDocRef.data();
+  await setDoc(doc(db, 'users', curUserId), {
+    ...curUserData,
+    usersInterested: [...(curUserData.usersInterested || []), userId], // add the other user to current user's interested list
+  });
+  await setDoc(doc(db, 'users', userId), {
+    ...otherUserData,
+    interestedUsers: [...(otherUserData.interestedUsers || []), curUserId], // add current user to other user's interested list
+  });
+};
+
 export {
   addToCollection,
   saveToCollection,
@@ -117,4 +137,5 @@ export {
   removeLikeProject,
   generateChatroom,
   sendChatToFirebase,
+  showInterestToUser,
 };

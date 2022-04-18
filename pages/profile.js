@@ -1,18 +1,61 @@
 import React from 'react';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
-import { getUserByEmail } from '../utils/backend/getUser';
+import {
+  getUserByEmail,
+  getUserByID,
+  getUserDocId,
+} from '../utils/backend/getUser';
 import Navbar from '../components/Navbar';
 import { AccountSettings } from '../components/AccountSettings';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCode,
+  faComment,
   faCommentDots,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
+import { generateChatroom } from '../utils/backend/insertDocument';
 
-const UserProfile = ({ user, router }) => {
+const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
+  console.log(usersInterested);
+  const InterestedUser = ({ name }) => {
+    const removeUser = async () => {};
+
+    return (
+      <div>
+        <div className='flex gap-2 items-center border rounded px-3 justify-center content-start min-w-max'>
+          <p>{name}</p>
+          <button
+            className='bg-red-500 hover:bg-red-400 text-white rounded-full px-2 my-1'
+            onClick={removeUser}
+          >
+            x
+          </button>
+        </div>
+      </div>
+    );
+  };
+  const OtherUser = ({ user: oUser }) => {
+    const sendChat = async () => {
+      await generateChatroom(oUser.id, user.id).then(() => {
+        router.push(`/chat?c=${oUser.id}`);
+      });
+    };
+    return (
+      <div className='flex items-center gap-2 mx-auto border-2 rounded-md px-2'>
+        <p>{oUser.name}</p>
+        <button
+          className='bg-cyan-500 hover:bg-cyan-400 text-white rounded-full px-2 my-1'
+          onClick={sendChat}
+        >
+          <FontAwesomeIcon icon={faComment} />
+        </button>
+      </div>
+    );
+  };
   return (
     <>
       <div className='flex flex-1 flex-col items-center mt-5'>
@@ -47,14 +90,48 @@ const UserProfile = ({ user, router }) => {
             <FontAwesomeIcon icon={faCode} /> &nbsp; Projects
           </button>
         </div>
+        <div className='flex gap-10 m-10'>
+          <div>
+            <h1 className='font-bold text-lg text-center'>
+              Users Interested in You
+            </h1>
+            <div className='text-center flex flex-col py-2 max-h-[200px] gap-1 overflow-y-scroll'>
+              {interestedUsers &&
+                interestedUsers.map((user, i) => (
+                  <OtherUser user={user} key={i} />
+                ))}
+            </div>
+          </div>
+          <div>
+            <h1 className='font-bold text-lg text-center'>
+              Users You are Interested In
+            </h1>
+            <div className='text-center'>
+              {usersInterested &&
+                usersInterested.map((user, i) => (
+                  <InterestedUser name={user.name} key={user.id} />
+                ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
 export default function ProfilePage({ pageProps }) {
-  const { session, user } = pageProps;
+  const { session, user, usersInterested, otherUsersInterestedInCurrentUser } =
+    pageProps;
   const router = useRouter();
+  const { info } = router.query;
+  React.useEffect(() => {
+    if (info === 'warn') {
+      Swal.fire({
+        icon: 'warning',
+        text: 'You must complete your profile first',
+      });
+    }
+  }, []);
   return (
     <>
       <Head>
@@ -67,7 +144,12 @@ export default function ProfilePage({ pageProps }) {
       ) : (
         <>
           <div className='flex flex-col md:flex-row'>
-            <UserProfile user={user} router={router} />
+            <UserProfile
+              user={user}
+              router={router}
+              usersInterested={usersInterested}
+              interestedUsers={otherUsersInterestedInCurrentUser}
+            />
             <div className='flex-1'>
               <AccountSettings session={session.user} firebaseUser={user} />
             </div>
@@ -82,7 +164,22 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const userEmail = session?.user?.email;
   const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
-
+  const userId = await getUserDocId(userEmail);
+  const usersInterested = await Promise.all(
+    (user?.usersInterested || []).map(async (userId) => {
+      return await getUserByID(userId).then((res) => {
+        return { name: res.firstName + ' ' + res.lastName, id: userId };
+      });
+    })
+  );
+  const otherUsersInterestedInCurrentUser = await Promise.all(
+    (user?.interestedUsers || []).map(async (userId) => {
+      return await getUserByID(userId).then((res) => {
+        return { name: res.firstName + ' ' + res.lastName, id: userId };
+      });
+    })
+  );
+  // await Promise.all(usersInterestedPromise);
   if (!session)
     return {
       redirect: {
@@ -92,6 +189,13 @@ export async function getServerSideProps(context) {
     };
 
   return {
-    props: { pageProps: { session, user } },
+    props: {
+      pageProps: {
+        session,
+        user: { ...user, id: userId },
+        usersInterested,
+        otherUsersInterestedInCurrentUser,
+      },
+    },
   };
 }

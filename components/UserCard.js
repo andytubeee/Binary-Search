@@ -11,25 +11,41 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { getFirestore, collection } from 'firebase/firestore';
-import { generateChatroom } from '../utils/backend/insertDocument';
+import {
+  generateChatroom,
+  showInterestToUser,
+} from '../utils/backend/insertDocument';
+import Swal from 'sweetalert2';
 
 export default function UserCard({ user, currentUser }) {
-  const { firstName, lastName, bio, skills, gender, id } = user;
+  const { firstName, lastName, bio, skills, gender, id } = user; // The user card, not signed in user
   const router = useRouter();
-  // const db = getFirestore();
-
-  // const [snapshot, loading, error] = useCollection(
-  //   collection(db, 'chatRooms'),
-  //   {
-  //     snapshotListenOptions: { includeMetadataChanges: true },
-  //   }
-  // );
 
   const onSendMessageBtnClick = async () => {
     await generateChatroom(currentUser.id, id).then((chatroom) => {
       router.push(`/chat?c=${id}`);
     });
-    // console.log(currentUser);
+  };
+  const onShowInterestClick = async () => {
+    if (currentUser.id === null) {
+      return Swal.fire({
+        icon: 'warning',
+        text: 'You must complete your profile first',
+        showConfirmButton: true,
+        confirmButtonText: 'Take me there',
+      }).then(async (result) => {
+        if (result.value) {
+          router.push('/profile');
+        }
+      });
+    }
+    showInterestToUser(id, currentUser.id).then(() => {
+      Swal.fire({
+        title: 'Interest Sent!',
+        icon: 'success',
+        text: 'Done :)',
+      });
+    });
   };
   return (
     <div className='py-4 rounded-lg border-bsBlue border-2 flex flex-col px-4 my-5'>
@@ -46,7 +62,7 @@ export default function UserCard({ user, currentUser }) {
         ))}
       </ul>
       <div className='flex mt-1'>
-        <button className='btn-orange mr-3'>
+        <button className='btn-orange mr-3' onClick={onShowInterestClick}>
           <FontAwesomeIcon icon={faCircleNodes} className='' /> Show Interest
         </button>
         <button className='btn-orange mr-2' onClick={onSendMessageBtnClick}>

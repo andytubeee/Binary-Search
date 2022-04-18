@@ -179,15 +179,13 @@ export async function getServerSideProps(context) {
   if (!user) {
     return {
       redirect: {
-        destination: '/profile',
+        destination: '/profile?info=warn',
         permanent: false,
       },
     };
   }
   const chatPromise = getActiveChatRooms(id).then(async (resArr) => {
-    return await Promise.all(resArr).then((value) => {
-      return value;
-    });
+    return await Promise.all(resArr).then((value) => value);
   });
   let chats = await chatPromise.then((chats) => chats);
   chats = chats.filter((c) => c !== undefined);
