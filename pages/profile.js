@@ -17,12 +17,22 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
-import { generateChatroom } from '../utils/backend/insertDocument';
+import {
+  generateChatroom,
+  removeUserInterest,
+} from '../utils/backend/insertDocument';
 
 const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
-  console.log(usersInterested);
-  const InterestedUser = ({ name }) => {
-    const removeUser = async () => {};
+  const InterestedUser = ({ name, id }) => {
+    const removeUser = async () => {
+      await removeUserInterest(id, user.id).then(() => {
+        Swal.fire({
+          title: 'Removed!',
+          text: `${name} has been removed from your interests`,
+          icon: 'success',
+        });
+      });
+    };
 
     return (
       <div>
@@ -109,7 +119,7 @@ const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
             <div className='text-center'>
               {usersInterested &&
                 usersInterested.map((user, i) => (
-                  <InterestedUser name={user.name} key={user.id} />
+                  <InterestedUser name={user.name} id={user.id} key={user.id} />
                 ))}
             </div>
           </div>

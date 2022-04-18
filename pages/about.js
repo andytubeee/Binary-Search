@@ -28,7 +28,7 @@ export default function AboutPage({ pageProps }) {
         <title>Binary Search - About</title>
       </Head>
       <Navbar signedIn={session} />
-      <div className='m-4 flex items-center justify-around flex-wrap p-10 self-center mx-auto'>
+      <div className='m-4 flex items-center justify-around flex-wrap p-10 self-center gap-16 mx-auto'>
         <Image
           src='/assets/vectors/undraw1.svg'
           height={500}
@@ -36,14 +36,14 @@ export default function AboutPage({ pageProps }) {
           alt='icon1'
           draggable={false}
         />
-        <div>
+        <div className='flex flex-col items-center w-[50%]'>
           <h1 className='text-3xl font-bold italic text-center'>{slogan}</h1>
           <p>
             Binary Search is a dating platform for CS/Engineering major students
           </p>
           {!session && (
             <button
-              className='border rounded p-2 my-5 bg-bsBlue hover:bg-cyan-700 text-white'
+              className='btn-red mt-5 self-stretch'
               onClick={() => router.push('/register')}
             >
               <FontAwesomeIcon icon={faUserGroup} className='text-white' />
