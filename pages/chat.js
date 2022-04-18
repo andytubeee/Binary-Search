@@ -4,22 +4,35 @@ import {
   faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
+import { useDocument } from 'react-firebase-hooks/firestore';
 import { AccountSettings } from '../components/AccountSettings';
 import Navbar from '../components/Navbar';
 import {
+  checkIfChatroomIDExists,
   getActiveChatRooms,
   getOtherUsers,
   getUserByEmail,
   getUserDocId,
 } from '../utils/backend/getUser';
+import { sendChatToFirebase } from '../utils/backend/insertDocument';
 
-const ChatWindow = ({ chat }) => {
+const ChatWindow = ({ chat, curUser }) => {
   // userId is the other user's id
-  if (chat.length === 0)
+  const [disableSendBtn, setDisableSendBtn] = useState(true);
+  const [chatSnapshot, setChatSnapshot] = useState({});
+  if (chat) {
+    const db = getFirestore();
+    // console.log(chat.chatId);
+    onSnapshot(doc(db, 'chatRooms', chat.chatId), (doc) => {
+      setChatSnapshot(doc.data());
+    });
+  }
+  if (!chat)
     return (
       <>
         <div className='min-h-full flex justify-center items-center'>
@@ -27,14 +40,59 @@ const ChatWindow = ({ chat }) => {
         </div>
       </>
     );
-  console.log(chat);
+  const sendChat = () => {
+    if (chatInput.current.value) {
+      const chatObj = {
+        userId: curUser.id,
+        message: chatInput.current.value,
+        timestamp: Date.now(),
+        name: curUser.firstName + ' ' + curUser.lastName,
+      };
+      chatInput.current.value = '';
+      sendChatToFirebase(chat.chatId, chatObj);
+      // console.log(chat.id);
+    }
+  };
+  const chatInput = React.createRef();
+  const Message = ({ message }) => (
+    <div
+      className={`my-2 ${
+        message.userId === curUser.id
+          ? 'self-end bg-bsBlue '
+          : 'self-start bg-gray-400'
+      }  text-white rounded px-3 py-1`}
+    >
+      <p className='text-xs'>{message.name}</p>
+      <p>{message.message}</p>
+    </div>
+  );
   return (
     <div className='h-full relative p-3'>
       <div className='flex min-w-[95%] md:min-w-[98%] gap-3 bottom-2 absolute flex-wrap'>
-        <input type='text' className='flex-1 rounded' placeholder='Text' />
-        <button className='btn-orange'>
+        <input
+          ref={chatInput}
+          type='text'
+          className='flex-1 rounded'
+          placeholder='Text'
+          onChange={(e) => setDisableSendBtn(!e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              sendChat();
+            }
+          }}
+        />
+        <button
+          className={disableSendBtn ? 'btn-disabled' : 'btn-orange'}
+          onClick={sendChat}
+        >
           <FontAwesomeIcon icon={faPaperPlane} /> &nbsp; Send
         </button>
+      </div>
+      <div className='flex-1 overflow-y-scroll flex flex-col'>
+        {chatSnapshot.messages &&
+          chatSnapshot.messages.map((msg, i) => (
+            <Message message={msg} key={i} />
+          ))}
       </div>
     </div>
   );
@@ -57,14 +115,17 @@ export default function ChatPage({ pageProps }) {
             chats.map((c, i) => (
               <button
                 className={`border rounded px-2 ${
-                  activeChatId === c.id ? 'bg-blue-500 text-white' : 'bg-white'
+                  activeChatId === c.oUid
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white'
                 }`}
                 key={i}
                 onClick={() => {
-                  setActiveChat(c.id);
+                  setActiveChat(c.oUid);
+                  router.push(`/chat?c=${c.oUid}`);
                 }}
               >
-                {c.name}
+                {c.oName}
               </button>
             ))}
         </div>
@@ -85,13 +146,15 @@ export default function ChatPage({ pageProps }) {
             <h1 className='text-center text-3xl font-bold mt-5'>Chat</h1>
 
             <div className='flex gap-3 justify-between my-3 px-2'>
-              <div className='flex h-[68vh] md:h-[78vh] border rounded flex-[0.2]'>
+              <div className='flex h-[68vh] md:h-[79vh] border rounded flex-[0.2]'>
                 <ChatUserColumn />
               </div>
               <div className='flex flex-1 border flex-col rounded'>
                 <ChatWindow
-                  userId={activeChatId}
-                  chat={chats.filter((c) => c.id === activeChatId)}
+                  chat={
+                    chats && chats.filter((c) => c.oUid === activeChatId)[0]
+                  }
+                  curUser={user}
                 />
               </div>
             </div>
@@ -122,9 +185,12 @@ export async function getServerSideProps(context) {
     };
   }
   const chatPromise = getActiveChatRooms(id).then(async (resArr) => {
-    return await Promise.all(resArr).then((value) => value);
+    return await Promise.all(resArr).then((value) => {
+      return value;
+    });
   });
-  const chats = await chatPromise.then((chats) => chats);
+  let chats = await chatPromise.then((chats) => chats);
+  chats = chats.filter((c) => c !== undefined);
   return {
     props: { pageProps: { session, user: { ...user, id }, chats } },
   };

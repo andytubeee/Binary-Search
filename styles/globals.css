@@ -6,7 +6,10 @@
 
 @layer utilities {
   .btn {
-    @apply p-2 rounded hover:translate-y-1 focus:outline-none text-white transition-all duration-300;
+    @apply p-2 rounded  hover:translate-y-1 focus:outline-none text-white transition-all duration-300;
+  }
+  .btn-disabled {
+    @apply p-2 rounded bg-gray-500  focus:outline-none text-white transition-all duration-300 cursor-not-allowed;
   }
   .btn-blue {
     @apply btn bg-blue-500 hover:bg-blue-600 text-white;

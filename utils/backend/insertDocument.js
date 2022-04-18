@@ -99,6 +99,16 @@ const generateChatroom = async (uId1, uId2) => {
   });
 };
 
+const sendChatToFirebase = async (chatId, message) => {
+  const db = getFirestore();
+  const docRef = await getDoc(doc(db, 'chatRooms', chatId));
+
+  const curMsgData = docRef.data();
+  await setDoc(doc(db, 'chatRooms', chatId), {
+    messages: [...curMsgData.messages, message],
+  });
+};
+
 export {
   addToCollection,
   saveToCollection,
@@ -106,4 +116,5 @@ export {
   likeProject,
   removeLikeProject,
   generateChatroom,
+  sendChatToFirebase,
 };

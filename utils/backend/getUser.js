@@ -58,12 +58,19 @@ const getActiveChatRooms = async (userId) => {
   return qSnapshot.docs.map(async (doc) => {
     const uid1 = doc.id.split('-')[0];
     const uid2 = doc.id.split('-')[1];
-    const ouid = uid1 === userId ? uid2 : uid1; // Other user's id in this chatroom;
-    const oUser = await getUserByID(ouid);
+    const oUid = uid1 === userId ? uid2 : uid1; // Other user's id in this chatroom;
+    const oUser = await getUserByID(oUid);
     const oName = oUser.firstName + ' ' + oUser.lastName;
     if (uid1 === userId || uid2 === userId) {
-      return { ...Object(doc.data()), id: ouid, name: oName };
+      return { chatId: doc.id, oUid, oName };
     }
+  });
+};
+
+const checkIfChatroomIDExists = async (chatroomId) => {
+  const db = getFirestore();
+  return await getDoc(doc(db, 'chatRooms', chatroomId)).then((docSnap) => {
+    return docSnap.exists();
   });
 };
 
@@ -74,4 +81,5 @@ export {
   getDocField,
   getUserByID,
   getActiveChatRooms,
+  checkIfChatroomIDExists,
 };
