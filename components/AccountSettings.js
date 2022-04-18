@@ -5,7 +5,7 @@ import { getUserDocId } from '../utils/backend/getUser';
 import {
   addToCollection,
   saveToCollection,
-} from '../utils/backend/insertDocument';
+} from '../utils/backend/modifyDocument';
 
 export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   const firstName = user.name.split(' ')[0];

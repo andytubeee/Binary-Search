@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
@@ -21,6 +22,30 @@ import {
 const HomeMain = ({ session, otherUsers, curUser }) => {
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState(otherUsers);
+  const [sortBy, setSortBy] = useState('default');
+  React.useEffect(() => {
+    const sorted = [...filteredUsers];
+    if (sortBy === 'name') {
+      sorted = sorted.sort((a, b) => {
+        return a.firstName > b.firstName ? 1 : -1;
+      });
+    } else if (sortBy === 'skills') {
+      sorted = sorted.sort((a, b) => {
+        return a.skills.length > b.skills.length ? -1 : 1;
+      });
+    } else if (sortBy === 'popularity') {
+      sorted = sorted.sort((a, b) => {
+        return (a?.interestedUsers || []).length >
+          (b?.interestedUsers || []).length
+          ? -1
+          : 1;
+      });
+    } else if (sortBy === 'default') {
+      sorted = otherUsers;
+    }
+    setFilteredUsers(sorted);
+  }, [sortBy]);
+
   const onSearchClick = () => {
     if (search) {
       setFilteredUsers(
@@ -78,10 +103,25 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
               <FontAwesomeIcon icon={faSearch} />
             </button>
           </div>
+          <div className='mt-2'>
+            <p className='font-bold'>Sort by </p>
+            <select
+              className='rounded-md'
+              onChange={(e) => {
+                setSortBy(e.target.value);
+              }}
+            >
+              <option value='default'>Default</option>
+              <option value='name'>Name</option>
+              <option value='skills'>Skills</option>
+              <option value='popularity'>Popularity</option>
+            </select>
+          </div>
           <div className='overflow-scroll mt-5'>
-            {filteredUsers.map((user, i) => (
+            {(filteredUsers || []).map((user, i) => (
               <UserCard key={i} user={user} currentUser={curUser} />
             ))}
+            {!filteredUsers && <h1>We have no users at the moment... :(</h1>}
           </div>
         </div>
       </div>

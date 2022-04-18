@@ -19,7 +19,7 @@ import {
   getUserByEmail,
   getUserDocId,
 } from '../utils/backend/getUser';
-import { sendChatToFirebase } from '../utils/backend/insertDocument';
+import { sendChatToFirebase } from '../utils/backend/modifyDocument';
 
 const ChatWindow = ({ chat, curUser }) => {
   // userId is the other user's id

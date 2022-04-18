@@ -14,7 +14,7 @@ import { getFirestore, collection } from 'firebase/firestore';
 import {
   generateChatroom,
   showInterestToUser,
-} from '../utils/backend/insertDocument';
+} from '../utils/backend/modifyDocument';
 import Swal from 'sweetalert2';
 
 export default function UserCard({ user, currentUser }) {
@@ -53,14 +53,22 @@ export default function UserCard({ user, currentUser }) {
         {firstName} {lastName} <span className='italic'>({gender[0]})</span>
       </h1>
       <h2 className='italic mb-3'> {bio}</h2>
-      <p className='font-bold'>Skills</p>
-      <ul>
-        {skills.map((skill, i) => (
-          <li key={i} className='ml-2'>
-            {skill}
-          </li>
-        ))}
-      </ul>
+      <div className='flex gap-10'>
+        <div>
+          <p className='font-bold'>Skills</p>
+          <ul>
+            {skills.map((skill, i) => (
+              <li key={i} className='ml-2'>
+                {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <span className='font-bold'>Popularity</span>:{' '}
+          {user?.interestedUsers?.length || 0}
+        </div>
+      </div>
       <div className='flex mt-1'>
         <button className='btn-orange mr-3' onClick={onShowInterestClick}>
           <FontAwesomeIcon icon={faCircleNodes} className='' /> Show Interest

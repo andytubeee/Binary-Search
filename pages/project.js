@@ -5,7 +5,7 @@ import { getUserByEmail, getUserDocId } from '../utils/backend/getUser';
 import Navbar from '../components/Navbar';
 import { AccountSettings } from '../components/AccountSettings';
 import { useRouter } from 'next/router';
-import { addFieldToCollection } from '../utils/backend/insertDocument';
+import { addFieldToCollection } from '../utils/backend/modifyDocument';
 import Swal from 'sweetalert2';
 
 const AddProject = ({ user, router }) => {

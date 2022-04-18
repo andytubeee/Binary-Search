@@ -112,23 +112,30 @@ const sendChatToFirebase = async (chatId, message) => {
   });
 };
 
-const showInterestToUser = async (userId /* The other user */, curUserId) => {
+// interestedUsers: Other users interested in you
+// usersInterested: Users you are interested in
+const showInterestToUser = async (
+  otherUserId /* The other user */,
+  curUserId
+) => {
   // curUserId is interested in userId
   const db = getFirestore();
   const curUserDocRef = await getDoc(doc(db, 'users', curUserId));
-  const otherUserDocRef = await getDoc(doc(db, 'users', userId));
+  const otherUserDocRef = await getDoc(doc(db, 'users', otherUserId));
   const curUserData = curUserDocRef.data();
   const otherUserData = otherUserDocRef.data();
   await setDoc(doc(db, 'users', curUserId), {
     ...curUserData,
-    usersInterested: [...(curUserData.usersInterested || []), userId], // add the other user to current user's interested list
+    usersInterested: [...(curUserData.usersInterested || []), otherUserId], // add the other user to current user's interested list
   });
-  await setDoc(doc(db, 'users', userId), {
+  await setDoc(doc(db, 'users', otherUserId), {
     ...otherUserData,
     interestedUsers: [...(otherUserData.interestedUsers || []), curUserId], // add current user to other user's interested list
   });
 };
 
+// interestedUsers: Other users interested in you
+// usersInterested: Users you are interested in
 const removeUserInterest = async (
   otherUserId /* The other user */,
   curUserId
@@ -139,20 +146,20 @@ const removeUserInterest = async (
   const otherUserDocRef = await getDoc(doc(db, 'users', otherUserId));
   const curUserData = curUserDocRef.data();
   const otherUserData = otherUserDocRef.data();
-  console.log(otherUserId, curUserId);
+  // console.log(curUserData, otherUserData);
   // Remove the other user from current user's interested list
   await setDoc(doc(db, 'users', curUserId), {
     ...curUserData,
     usersInterested: curUserData.usersInterested.filter(
-      (user) => user.id !== otherUserId
-    ), 
+      (user) => user !== otherUserId
+    ),
   });
-  // await setDoc(doc(db, 'users', otherUserId), {
-  //   ...otherUserData,
-  //   interestedUsers: otherUserData.interestedUsers.filter(
-  //     (user) => user.id !== curUserData
-  //   ), // add current user to other user's interested list
-  // });
+  await setDoc(doc(db, 'users', otherUserId), {
+    ...otherUserData,
+    interestedUsers: otherUserData.interestedUsers.filter(
+      (user) => user !== curUserId
+    ), // add current user to other user's interested list
+  });
 };
 
 export {

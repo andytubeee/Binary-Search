@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 import {
   generateChatroom,
   removeUserInterest,
-} from '../utils/backend/insertDocument';
+} from '../utils/backend/modifyDocument';
 
 const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
   const InterestedUser = ({ name, id }) => {
@@ -30,6 +30,8 @@ const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
           title: 'Removed!',
           text: `${name} has been removed from your interests`,
           icon: 'success',
+        }).then(() => {
+          router.reload();
         });
       });
     };
