@@ -100,7 +100,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   return (
     <>
       <div className='flex flex-col items-center my-4 py-2'>
-        <h1 className='font-lg font-bold'>
+        <h1 className='font-lg font-bold mb-3'>
           {fb ? 'Account Settings' : 'Complete your Profile'}
         </h1>
         <div className='flex flex-col w-7/12 gap-3'>

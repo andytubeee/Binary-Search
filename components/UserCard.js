@@ -26,7 +26,9 @@ export default function UserCard({ user, currentUser }) {
   // );
 
   const onSendMessageBtnClick = async () => {
-    await generateChatroom(currentUser.id, id);
+    await generateChatroom(currentUser.id, id).then((chatroom) => {
+      router.push(`/chat?c=${id}`);
+    });
     // console.log(currentUser);
   };
   return (
