@@ -71,7 +71,11 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
     <>
       <div className='max-h-sc'>
         <h1 className='text-3xl text-center my-4'>
-          Hello {session.user.name}!{' '}
+          Hello{' '}
+          {curUser
+            ? curUser.firstName + ' ' + curUser.lastName
+            : session.user.name}
+          !{' '}
         </h1>
 
         {curUser.id === null && (
