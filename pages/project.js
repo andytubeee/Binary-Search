@@ -121,12 +121,15 @@ const AddProject = ({ user, router }) => {
           placeholder='Tech Stack'
           className='rounded'
           ref={stackTextFieldRef}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') addStack();
+          }}
         />{' '}
         <button className=' btn-blue' onClick={addStack}>
           Add
         </button>
       </div>
-      <div className='flex flex-wrap'>
+      <div className='flex flex-wrap gap-2 max-w-[340px]'>
         {pInfo.techStacks.map((stack, i) => (
           <TechStack stack={stack} key={i} />
         ))}
@@ -180,7 +183,7 @@ const ProjectCard = ({ project, user, router }) => {
       <p className='italic'>{project?.url}</p>
       <p>{project.description}</p>
       <p className='mt-4 font-bold'>Tech Stack(s)</p>
-      <div className='flex flex-wrap'>
+      <div className='flex flex-wrap gap-2'>
         {project.techStacks.map((stack, i) => (
           <p key={i}>{stack}</p>
         ))}
