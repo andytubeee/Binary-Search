@@ -12,7 +12,7 @@ import {
   addFieldToCollection,
   likeProject,
   removeLikeProject,
-} from '../../utils/backend/insertDocument';
+} from '../../utils/backend/modifyDocument';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';

@@ -10,28 +10,39 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useDocument } from 'react-firebase-hooks/firestore';
+import Swal from 'sweetalert2';
 import { AccountSettings } from '../components/AccountSettings';
 import Navbar from '../components/Navbar';
 import {
-  checkIfChatroomIDExists,
   getActiveChatRooms,
   getOtherUsers,
   getUserByEmail,
   getUserDocId,
 } from '../utils/backend/getUser';
-import { sendChatToFirebase } from '../utils/backend/modifyDocument';
+import {
+  deleteMessage,
+  sendChatToFirebase,
+} from '../utils/backend/modifyDocument';
 
 const ChatWindow = ({ chat, curUser }) => {
   // userId is the other user's id
   const [disableSendBtn, setDisableSendBtn] = useState(true);
   const [chatSnapshot, setChatSnapshot] = useState({});
+  const chatInput = React.createRef();
+  const chatMessagesRef = React.createRef();
   if (chat) {
     const db = getFirestore();
-    // console.log(chat.chatId);
     onSnapshot(doc(db, 'chatRooms', chat.chatId), (doc) => {
       setChatSnapshot(doc.data());
     });
   }
+
+  React.useEffect(() => {
+    if (chatMessagesRef.current) {
+      // console.log(chatMessagesRef.current.scrollHeight);
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  }, []);
   if (!chat)
     return (
       <>
@@ -50,30 +61,40 @@ const ChatWindow = ({ chat, curUser }) => {
       };
       chatInput.current.value = '';
       sendChatToFirebase(chat.chatId, chatObj);
-      // console.log(chat.id);
     }
   };
-  const deleteMessage = async () => {};
-  const chatInput = React.createRef();
-  const Message = ({ message }) => {
+
+  const Message = ({ message, chatRoomId }) => {
     return (
       <div
         className={`my-2 ${
-          message.userId === curUser.id
-            ? 'self-end bg-bsBlue '
-            : 'self-start bg-gray-400'
-        }  text-white rounded px-3 py-1 min-w-[130px] max-w-[50%]`}
+          message.userId === curUser.id ? ' bg-bsBlue ml-5' : 'bg-gray-400 mr-5'
+        }  text-white rounded px-3 py-2`}
       >
-        {message.userId === curUser.id && (
-          <button className='float-right' onClick={deleteMessage}>
-            x
-          </button>
-        )}
-        <p className='text-xs'>{message.name}</p>
+        <p className='text-xs font-bold'>{message.name}</p>
         <p>{message.message}</p>
       </div>
     );
   };
+
+  const onDeleteMessage = async (message) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this chat!',
+      icon: 'warning',
+    }).then(async (result) => {
+      if (result.value) {
+        await deleteMessage(chat.chatId, message)
+          .then(() => {
+            Swal.fire('Deleted!', 'This message has been deleted.', 'success');
+          })
+          .catch((err) => {
+            Swal.fire('Error!', err.message, 'error');
+          });
+      }
+    });
+  };
+
   return (
     <div className='h-full relative p-3'>
       <div className='flex min-w-[95%] md:min-w-[98%] gap-3 bottom-2 absolute flex-wrap'>
@@ -97,10 +118,35 @@ const ChatWindow = ({ chat, curUser }) => {
           <FontAwesomeIcon icon={faPaperPlane} /> &nbsp; Send
         </button>
       </div>
-      <div className='flex-1 overflow-y-scroll no-scrollbar flex flex-col max-h-[81%] sm:max-h-[90%] lg:max-h-[90%]'>
+      <div
+        className='flex-1 overflow-y-scroll no-scrollbar flex flex-col max-h-[81%] sm:max-h-[90%] lg:max-h-[90%]'
+        ref={chatMessagesRef}
+      >
         {chatSnapshot.messages &&
           chatSnapshot.messages.map((msg, i) => (
-            <Message message={msg} key={i} />
+            <div className='flex flex-col' key={i}>
+              <div
+                className={`flex items-start ${
+                  msg.userId === curUser.id
+                    ? 'self-end justify-end'
+                    : 'self-start justify-start'
+                }  w-[50%]`}
+              >
+                <Message message={msg} chatRoomId={chat.chatId} />
+
+                {/* Display delete button */}
+                {msg.userId === curUser.id && (
+                  <button
+                    className='hover:text-red-400 mt-2 ml-2'
+                    onClick={() => {
+                      onDeleteMessage(msg);
+                    }}
+                  >
+                    x
+                  </button>
+                )}
+              </div>
+            </div>
           ))}
       </div>
     </div>

@@ -118,7 +118,7 @@ const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
             <h1 className='font-bold text-lg text-center'>
               Users You are Interested In
             </h1>
-            <div className='text-center'>
+            <div className='text-center flex flex-col py-2 gap-1 overflow-y-scroll max-h-[200px]'>
               {usersInterested &&
                 usersInterested.map((user, i) => (
                   <InterestedUser name={user.name} id={user.id} key={user.id} />

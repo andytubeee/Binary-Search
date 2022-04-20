@@ -162,6 +162,19 @@ const removeUserInterest = async (
   });
 };
 
+const deleteMessage = async (chatId, message) => {
+  const db = getFirestore();
+  const docRef = await getDoc(doc(db, 'chatRooms', chatId));
+
+  const curMsgData = docRef.data();
+  // console.log(curMsgData);
+  await setDoc(doc(db, 'chatRooms', chatId), {
+    messages: curMsgData.messages.filter(
+      (msg) => JSON.stringify(msg) !== JSON.stringify(message)
+    ),
+  });
+};
+
 export {
   addToCollection,
   saveToCollection,
@@ -172,4 +185,5 @@ export {
   sendChatToFirebase,
   showInterestToUser,
   removeUserInterest,
+  deleteMessage,
 };

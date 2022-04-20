@@ -73,6 +73,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
         <h1 className='text-3xl text-center my-4'>
           Hello {session.user.name}!{' '}
         </h1>
+
         {curUser.id === null && (
           <h1 className='text-center text-red-600'>
             <span className='font-bold'>Note: </span>
