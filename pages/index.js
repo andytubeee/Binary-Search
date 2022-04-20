@@ -123,6 +123,9 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
               <UserCard key={i} user={user} currentUser={curUser} />
             ))}
             {!filteredUsers && <h1>We have no users at the moment... :(</h1>}
+            {filteredUsers.length === 0 && search.length > 0 && (
+              <h1>No user found with current search keywords</h1>
+            )}
           </div>
         </div>
       </div>
