@@ -18,10 +18,11 @@
     "flowbite": "^1.4.2",
     "next": "12.1.5",
     "next-absolute-url": "^1.2.2",
-    "next-auth": "^4.3.2",
+    "next-auth": "^4.3.3",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-firebase-hooks": "^5.0.3",
+    "react-scroll-to-bottom": "^4.2.0",
     "sweetalert2": "^11.4.8"
   },
   "devDependencies": {

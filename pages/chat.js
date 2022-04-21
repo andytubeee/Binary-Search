@@ -9,7 +9,9 @@ import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import { useDocument } from 'react-firebase-hooks/firestore';
+import ScrollToBottom from 'react-scroll-to-bottom';
+import useScrollToBottom from 'react-scroll-to-bottom/lib/hooks/useScrollToBottom';
+
 import Swal from 'sweetalert2';
 import { AccountSettings } from '../components/AccountSettings';
 import Navbar from '../components/Navbar';
@@ -38,10 +40,7 @@ const ChatWindow = ({ chat, curUser }) => {
   }
 
   React.useEffect(() => {
-    if (chatMessagesRef.current) {
-      // console.log(chatMessagesRef.current.scrollHeight);
-      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
-    }
+    // Implement scrolling to bottom
   }, []);
   if (!chat)
     return (
@@ -69,7 +68,7 @@ const ChatWindow = ({ chat, curUser }) => {
       <div
         className={`my-2 ${
           message.userId === curUser.id ? ' bg-bsBlue ml-5' : 'bg-gray-400 mr-5'
-        }  text-white rounded px-3 py-2`}
+        }  text-white rounded-lg px-3 py-2`}
       >
         <p className='text-xs font-bold'>{message.name}</p>
         <p>{message.message}</p>
@@ -122,32 +121,34 @@ const ChatWindow = ({ chat, curUser }) => {
         className='flex-1 overflow-y-scroll no-scrollbar flex flex-col max-h-[81%] sm:max-h-[90%] lg:max-h-[90%]'
         ref={chatMessagesRef}
       >
-        {chatSnapshot.messages &&
-          chatSnapshot.messages.map((msg, i) => (
-            <div className='flex flex-col' key={i}>
-              <div
-                className={`flex items-start ${
-                  msg.userId === curUser.id
-                    ? 'self-end justify-end'
-                    : 'self-start justify-start'
-                }  w-[50%]`}
-              >
-                <Message message={msg} chatRoomId={chat.chatId} />
+        <ScrollToBottom>
+          {chatSnapshot.messages &&
+            chatSnapshot.messages.map((msg, i) => (
+              <div className='flex flex-col' key={i}>
+                <div
+                  className={`flex items-start ${
+                    msg.userId === curUser.id
+                      ? 'self-end justify-end'
+                      : 'self-start justify-start'
+                  }  w-[50%]`}
+                >
+                  <Message message={msg} chatRoomId={chat.chatId} />
 
-                {/* Display delete button */}
-                {msg.userId === curUser.id && (
-                  <button
-                    className='hover:text-red-400 mt-2 ml-2'
-                    onClick={() => {
-                      onDeleteMessage(msg);
-                    }}
-                  >
-                    x
-                  </button>
-                )}
+                  {/* Display delete button */}
+                  {msg.userId === curUser.id && (
+                    <button
+                      className='hover:text-red-400 mt-2 ml-2'
+                      onClick={() => {
+                        onDeleteMessage(msg);
+                      }}
+                    >
+                      x
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </ScrollToBottom>
       </div>
     </div>
   );

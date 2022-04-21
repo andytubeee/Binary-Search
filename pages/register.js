@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Swal from 'sweetalert2';
 
 import { getUserByEmail } from '../utils/backend/getUser';
-import { addToCollection } from '../utils/backend/insertDocument';
+import { addToCollection } from '../utils/backend/modifyDocument';
 import { AccountSettings } from '../components/AccountSettings';
 
 import {
