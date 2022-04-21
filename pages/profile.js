@@ -144,7 +144,6 @@ export default function ProfilePage({ pageProps }) {
       });
     }
   }, []);
-  console.log(user);
   return (
     <>
       <Head>
