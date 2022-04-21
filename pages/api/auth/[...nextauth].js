@@ -13,7 +13,7 @@ export default NextAuth({
         'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
     }),
     CredentialsProvider({
-      name: 'Email',
+      name: 'EmailPassword',
       credentials: {
         email: {
           label: 'Email',
@@ -41,6 +41,7 @@ export default NextAuth({
             const errorMessage = error.message;
             return null;
           });
+        console.log(user);
         return user;
       },
     }),
@@ -67,7 +68,7 @@ export default NextAuth({
       if (url === '/profile') {
         return Promise.resolve('/');
       }
-      return Promise.resolve('/');
+      return Promise.resolve('/profile');
     },
   },
 });

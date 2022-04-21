@@ -78,7 +78,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
           !{' '}
         </h1>
 
-        {curUser.id === null && (
+        {curUser === null && (
           <h1 className='text-center text-red-600'>
             <span className='font-bold'>Note: </span>
             Please complete your profile...
@@ -146,7 +146,7 @@ export default function Home({ pageProps }) {
         <title>Binary Search</title>
       </Head>
       <Navbar signedIn={session} />
-      {!user || !session ? (
+      {!session ? (
         <div className='flex flex-col min-h-[600px] mx-auto max-w-[400px] my-5 justify-center'>
           <p className='font-bold mx-5 my-3 text-center'>
             To see other users, please register or log in first.
@@ -201,6 +201,12 @@ export async function getServerSideProps(context) {
   );
   const uid = await getUserDocId(userEmail);
   return {
-    props: { pageProps: { session, user: { ...user, id: uid }, otherUsers } },
+    props: {
+      pageProps: {
+        session,
+        user: uid ? { ...user, id: uid } : null,
+        otherUsers,
+      },
+    },
   };
 }

@@ -15,7 +15,6 @@ import {
 } from 'firebase/auth';
 
 import Image from 'next/image';
-import { route } from 'next/dist/server/router';
 import { useRouter } from 'next/router';
 
 const SignInSection = ({ router }) => {
@@ -42,22 +41,27 @@ const SignInSection = ({ router }) => {
       redirect: false,
       email: loginInfo.email,
       password: loginInfo.password,
-    }).then(({ ok, error }) => {
-      if (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong, check your credential!',
-        });
-      } else {
-        router.push('/');
-      }
-    });
+    })
+      .then(({ ok, error }) => {
+        if (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong, check your credential!',
+          });
+        } else {
+          console.log('Pressed');
+          // router.push('');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
       <div className='mx-5 flex flex-col justify-center items-center'>
-        <div className='flex flex-col w-[30%] mt-5 gap-2'>
+        <div className='flex flex-col w-[80%] md:w-[40%] lg:w-[30%] mt-5 gap-2'>
           <input
             placeholder='Email'
             type='email'
@@ -80,19 +84,19 @@ const SignInSection = ({ router }) => {
           >
             Sign In{' '}
           </button>{' '}
+          <button
+            className='flex w-[100%] justify-center items-center gap-2 btn-cyan'
+            onClick={() => signIn('google')}
+          >
+            <Image
+              src='/assets/icon/icons8-google.svg'
+              height={20}
+              width={20}
+              alt='googleIcon'
+            />{' '}
+            Sign In with Google
+          </button>
         </div>
-        <button
-          className='flex w-[30%] justify-center items-center gap-2 btn-cyan mt-3'
-          onClick={() => signIn('google')}
-        >
-          <Image
-            src='/assets/icon/icons8-google.svg'
-            height={20}
-            width={20}
-            alt='googleIcon'
-          />{' '}
-          Sign In with Google
-        </button>
       </div>
     </>
   );
