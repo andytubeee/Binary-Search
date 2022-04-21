@@ -41,7 +41,6 @@ export default NextAuth({
             const errorMessage = error.message;
             return null;
           });
-        console.log(user);
         return user;
       },
     }),
@@ -68,7 +67,7 @@ export default NextAuth({
       if (url === '/profile') {
         return Promise.resolve('/');
       }
-      return Promise.resolve('/profile');
+      return Promise.resolve('/');
     },
   },
 });

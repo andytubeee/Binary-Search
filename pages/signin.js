@@ -50,12 +50,11 @@ const SignInSection = ({ router }) => {
             text: 'Something went wrong, check your credential!',
           });
         } else {
-          console.log('Pressed');
-          // router.push('');
+          router.push('/');
         }
       })
       .catch((err) => {
-        console.log(err);
+        router.push('/profile');
       });
   };
   return (
