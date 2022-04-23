@@ -16,6 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 export default function Navbar({ signedIn }) {
   const router = useRouter();
@@ -34,14 +35,18 @@ export default function Navbar({ signedIn }) {
     <>
       <nav className='bg-bsBlue flex flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
         <div className='flex gap-5 flex-col md:flex-row'>
-          <a className='flex gap-2 mr-5 items-center text-white'>
-            <FontAwesomeIcon icon={faHeart} className='text-bsPink1 text-3xl' />
-            <span
-              className='text-2xl cursor-pointer'
-              onClick={() => router.push('/')}
-            >
-              Binary Search
-            </span>
+          <a
+            className='flex gap-2 mr-5 items-center text-white cursor-pointer hover:translate-y-1 transition-all duration-200'
+            onClick={() => router.push('/')}
+          >
+            <Image
+              src='/assets/logo.svg'
+              width={'50'}
+              height={'50'}
+              alt='Binary Search logo'
+              draggable={false}
+            />
+            <span className='text-2xl cursor-pointer'>Binary Search</span>
           </a>
           <div className='flex gap-8' id='mobile-menu'>
             <MenuItem label='Home' icon={faHome} iconPos='l' />
