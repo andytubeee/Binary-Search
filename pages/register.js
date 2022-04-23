@@ -28,6 +28,7 @@ const RegisterSection = ({ router }) => {
     email: '',
     password: '',
     confirmPassword: '',
+    confirmTos: false,
   });
   const onRegisterClick = async () => {
     if (
@@ -52,6 +53,14 @@ const RegisterSection = ({ router }) => {
         icon: 'error',
         title: 'Oops...',
         text: 'Passwords do not match!',
+      });
+    }
+
+    if (newUserInfo.confirmTos === false) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'One more thing...',
+        text: 'You must agree to the Terms of Service!',
       });
     }
 
@@ -150,6 +159,24 @@ const RegisterSection = ({ router }) => {
               })
             }
           />
+          <div className='flex gap-2 items-center'>
+            <input
+              id='tos-cb'
+              type='checkbox'
+              onChange={(e) =>
+                setNewUserInfo({ ...newUserInfo, confirmTos: e.target.value })
+              }
+            />
+            <label htmlFor='tos-cb'>
+              I agree with the{' '}
+              <a
+                className='text-blue-400 cursor-pointer'
+                onClick={() => router.push('/secret-tos')}
+              >
+                terms and conditions
+              </a>
+            </label>
+          </div>
           <button
             className='btn-blue3 flex justify-center items-center mt-1 gap-2'
             onClick={onRegisterClick}
