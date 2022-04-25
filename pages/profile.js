@@ -153,20 +153,21 @@ export default function ProfilePage({ pageProps }) {
       <h1 className='text-center text-3xl font-bold mt-5'>Profile</h1>
       {!user ? (
         <AccountSettings session={session.user} />
-      ) : // <>
-      //   <div className='flex flex-col md:flex-row'>
-      //     <UserProfile
-      //       user={user}
-      //       router={router}
-      //       usersInterested={usersInterested}
-      //       interestedUsers={otherUsersInterestedInCurrentUser}
-      //     />
-      //     <div className='flex-1'>
-      //       <AccountSettings session={session.user} firebaseUser={user} />
-      //     </div>
-      //   </div>
-      // </>
-      null}
+      ) : (
+        <>
+          <div className='flex flex-col md:flex-row'>
+            <UserProfile
+              user={user}
+              router={router}
+              usersInterested={usersInterested}
+              interestedUsers={otherUsersInterestedInCurrentUser}
+            />
+            <div className='flex-1'>
+              <AccountSettings session={session.user} firebaseUser={user} />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
