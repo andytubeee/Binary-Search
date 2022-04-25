@@ -14,6 +14,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "dotenv": "^16.0.0",
     "firebase": "^9.6.11",
     "flowbite": "^1.4.2",
     "next": "12.1.5",

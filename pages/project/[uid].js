@@ -32,7 +32,7 @@ const ProjectCard = ({ project, user, router }) => {
   };
   const alreadyLiked = project?.likedBy?.includes(user.id);
   return (
-    <div className='bg-bsBlue min-h-[50%] min-w-[300px] text-white p-3 rounded-xl m-3'>
+    <div className='bg-Cyan3 min-h-[50%] min-w-[300px] text-white p-3 rounded-xl m-3'>
       <h1 className='text-2xl font-bold'>{project.name}</h1>
       <p className='italic'>{project?.url}</p>
       <p>{project.description}</p>

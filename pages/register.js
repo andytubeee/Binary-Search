@@ -72,32 +72,40 @@ const RegisterSection = ({ router }) => {
       newUserInfo.password
     )
       .then((userCredential) => {
-        // Signed in
+        // When signed in, update the user's profile with form data
         updateProfile(userCredential.user, {
           displayName: `${capitalizeFirstLetter(
             newUserInfo.firstName
           )} ${capitalizeFirstLetter(newUserInfo.lastName)}`,
         }).then(() => {
+          // Display a success message
           Swal.fire({
             icon: 'success',
             title: 'Success',
             text: 'Account registered, please complete your profile',
           }).then(() => {
+            // Try signing in with credentials from the form
             signIn('credentials', {
               redirect: false,
               email: newUserInfo.email,
               password: newUserInfo.password,
-            }).then(({ ok, error }) => {
-              if (ok) {
+            })
+              .then(({ ok, error }) => {
+                if (ok) {
+                  // Redirect to the profile page
+                  router.push('/profile');
+                } else {
+                  // Display an error message
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong, please try again',
+                  });
+                }
+              })
+              .catch((error) => {
                 router.push('/profile');
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'Something went wrong, please try again',
-                });
-              }
-            });
+              });
           });
         });
       })
@@ -115,7 +123,7 @@ const RegisterSection = ({ router }) => {
   return (
     <>
       <div className='mx-5 flex flex-col mt-5 justify-center items-center'>
-        <div className='flex flex-col w-[30%] mb-2 gap-2'>
+        <div className='flex flex-col w-[70%] lg:w-[30%] mb-2 gap-2'>
           <input
             placeholder='First Name'
             type='text'
@@ -159,23 +167,27 @@ const RegisterSection = ({ router }) => {
               })
             }
           />
-          <div className='flex gap-2 items-center'>
+          <div className='flex items-center'>
             <input
               id='tos-cb'
               type='checkbox'
-              onChange={(e) =>
-                setNewUserInfo({ ...newUserInfo, confirmTos: e.target.value })
-              }
+              onChange={(e) => {
+                setNewUserInfo({
+                  ...newUserInfo,
+                  confirmTos: e.target.checked,
+                });
+              }}
+              className='mr-2'
             />
-            <label htmlFor='tos-cb'>
-              I agree with the{' '}
-              <a
-                className='text-blue-400 cursor-pointer'
-                onClick={() => router.push('/secret-tos')}
-              >
-                terms and conditions
-              </a>
+            <label htmlFor='tos-cb' className='mr-1'>
+              I agree with the
             </label>
+            <a
+              className='text-blue-400 cursor-pointer'
+              onClick={() => router.push('/secret-tos')}
+            >
+              terms and conditions
+            </a>
           </div>
           <button
             className='btn-blue3 flex justify-center items-center mt-1 gap-2'
@@ -183,16 +195,16 @@ const RegisterSection = ({ router }) => {
           >
             Register{' '}
           </button>{' '}
+          <button className='flex justify-center items-center gap-2 btn-cyan'>
+            <Image
+              src='/assets/icon/icons8-google.svg'
+              height={20}
+              width={20}
+              alt='googleIcon'
+            />{' '}
+            Register with Google
+          </button>
         </div>
-        <button className='flex w-[30%] justify-center items-center gap-2 btn-cyan'>
-          <Image
-            src='/assets/icon/icons8-google.svg'
-            height={20}
-            width={20}
-            alt='googleIcon'
-          />{' '}
-          Register with Google
-        </button>
       </div>
     </>
   );

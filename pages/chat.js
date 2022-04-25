@@ -67,7 +67,7 @@ const ChatWindow = ({ chat, curUser }) => {
     return (
       <div
         className={`my-2 ${
-          message.userId === curUser.id ? ' bg-bsBlue ml-5' : 'bg-gray-400 mr-5'
+          message.userId === curUser.id ? ' bg-Cyan3 ml-5' : 'bg-gray-400 mr-5'
         }  text-white rounded-lg px-3 py-2`}
       >
         <p className='text-xs font-bold'>{message.name}</p>

@@ -12,19 +12,19 @@
     @apply p-2 rounded bg-gray-500  focus:outline-none text-white transition-all duration-300 cursor-not-allowed;
   }
   .btn-blue {
-    @apply btn bg-blue-500 hover:bg-blue-600 text-white;
+    @apply btn bg-Cyan hover:bg-Cyan2 text-white;
   }
   .btn-blue2 {
-    @apply btn bg-blue-700 hover:bg-blue-800 text-white;
+    @apply btn bg-Cyan2 hover:bg-Cyan3 text-white;
   }
   .btn-blue3 {
-    @apply btn bg-bsBlue hover:bg-blue-600  text-white;
+    @apply btn bg-Cyan3 hover:bg-Cyan  text-white;
   }
   .btn-purple {
-    @apply btn bg-purple-500 hover:bg-purple-600 text-white;
+    @apply btn bg-Purple2 hover:bg-Purple3 text-white;
   }
   .btn-pink {
-    @apply btn bg-pink-400 hover:bg-pink-500 text-white;
+    @apply btn bg-Pink2 hover:bg-Pink3 text-white;
   }
   .btn-pink2 {
     @apply btn bg-pink-500 hover:bg-pink-600 text-white;
@@ -33,7 +33,7 @@
     @apply btn bg-cyan-900 hover:bg-cyan-800 text-white;
   }
   .btn-orange {
-    @apply btn bg-orange-300 hover:bg-orange-400 text-white;
+    @apply btn bg-Orange hover:bg-Orange2 text-white;
   }
   .btn-red {
     @apply btn bg-red-500 hover:bg-red-600 text-white;

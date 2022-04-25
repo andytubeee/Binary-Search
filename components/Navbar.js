@@ -23,7 +23,7 @@ export default function Navbar({ signedIn }) {
 
   const MenuItem = ({ label, direct = '', icon = null }) => (
     <button
-      className='group flex scale-125 items-center text-white hover:text-bsPink2 transition-all group-hover:scale-[1.3] duration-200'
+      className='group flex scale-125 items-center text-white hover:text-Black3 transition-all group-hover:scale-[1.3] duration-200'
       onClick={() => router.push(`/${direct}`)}
     >
       {icon && <FontAwesomeIcon icon={icon} />}&nbsp;
@@ -33,7 +33,7 @@ export default function Navbar({ signedIn }) {
 
   return (
     <>
-      <nav className='bg-bsBlue flex flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
+      <nav className='bg-Cyan3 flex flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
         <div className='flex gap-5 flex-col md:flex-row'>
           <a
             className='flex gap-2 mr-5 items-center text-white cursor-pointer hover:translate-y-1 transition-all duration-200'
@@ -68,7 +68,7 @@ export default function Navbar({ signedIn }) {
                 &nbsp; Sign In
               </button>
               <button
-                className='btn-blue font-bold'
+                className='btn-purple font-bold'
                 onClick={() => router.push('/register')}
               >
                 <FontAwesomeIcon icon={faDoorOpen} className='text-white' />
@@ -81,7 +81,7 @@ export default function Navbar({ signedIn }) {
               <MenuItem label='Project' direct='project' icon={faCode} />
               <MenuItem label='Profile' direct='profile' icon={faAddressBook} />
               <button
-                className='btn bg-purple-700 hover:bg-purple-800 font-bold'
+                className='btn-orange2 font-bold'
                 onClick={() => signOut()}
               >
                 <FontAwesomeIcon icon={faArrowTurnUp} className='text-white' />

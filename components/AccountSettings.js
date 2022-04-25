@@ -187,7 +187,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
               }}
             />
             <button
-              className=' bg-bsBlue text-white rounded-md px-2 hover:translate-x-1 duration-500 transition-all my-2 lg:m-0'
+              className='bg-Cyan3 text-white rounded-md px-2 hover:translate-x-1 duration-500 transition-all my-2 lg:m-0'
               onClick={() => {
                 const newSkill = skillInputRef.current.value;
                 if (userInfo.skills.includes(newSkill)) {
