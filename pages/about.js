@@ -39,7 +39,30 @@ export default function AboutPage({ pageProps }) {
         <div className='flex flex-col items-center w-[50%]'>
           <h1 className='text-3xl font-bold italic text-center'>{slogan}</h1>
           <p>
-            Binary Search is a dating platform for CS/Engineering major students
+            Binary Search is a dating platform for CS/Engineering major
+            students. This platform is for people to find other users, chat with
+            people of interests, and meet new people.
+            <div className='rounded bg-Purple3 p-4 text-white mt-5'>
+              <p className='font-bold'>Users</p>
+              <p>
+                On Binary Search, you can find others who probably also majors
+                in CS or STEM, if you have failed to socialize in person. It
+                isn&apos;t too late!
+              </p>
+              <p className='font-bold mt-3'>Project</p>
+              <p>
+                If you have many side-projects but don&apos;t know where to
+                showcase them. You can now posts them on Binary Search. You can
+                also look at other people&apos;s project.
+              </p>
+              <p className='font-bold mt-3'>Chat</p>
+              <p>
+                {' '}
+                Don&apos; be afraid to talk to others. Confidence comes from
+                within; from your skills, your side projects, and your passion
+                for CS!
+              </p>
+            </div>
           </p>
           {!session && (
             <button

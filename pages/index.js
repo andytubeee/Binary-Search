@@ -196,10 +196,17 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const userEmail = session?.user?.email;
   const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
-  const otherUsers = await getOtherUsers(
+  const uid = await getUserDocId(userEmail);
+
+  const otherUsersPromises = await getOtherUsers(
     userEmail !== undefined ? userEmail : ''
   );
-  const uid = await getUserDocId(userEmail);
+
+  const otherUsers = await Promise.all(otherUsersPromises).then(
+    (otherUsers) => otherUsers
+  );
+
+  // console.log(otherUsers);
   return {
     props: {
       pageProps: {

@@ -21,8 +21,12 @@ const getOtherUsers = async (email) => {
   const userRef = collection(db, 'users');
   const q = query(userRef, where('email', '!=', email));
   const qs = await getDocs(q);
-  return qs.docs.map((doc) => {
-    return { ...Object(doc.data()), id: doc.id };
+
+  return qs.docs.map(async (doc) => {
+    const dummyImgUrl = await fetch('https://loremflickr.com/320/240/computer')
+      .then((resp) => resp.url)
+      .then((url) => url);
+    return { ...Object(doc.data()), id: doc.id, dummyImgUrl };
   });
 };
 

@@ -16,9 +16,10 @@ import {
   showInterestToUser,
 } from '../utils/backend/modifyDocument';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 
 export default function UserCard({ user, currentUser }) {
-  const { firstName, lastName, bio, skills, gender, id } = user; // The user card, not signed in user
+  const { firstName, lastName, bio, skills, gender, id, dummyImgUrl } = user; // The user card, not signed in user
   const router = useRouter();
 
   const onSendMessageBtnClick = async () => {
@@ -48,36 +49,50 @@ export default function UserCard({ user, currentUser }) {
     });
   };
   return (
-    <div className='py-4 rounded-lg border-bsBlue border-2 flex flex-col px-4 my-5'>
-      <h1 className='text-2xl font-bold'>
-        {firstName} {lastName} <span className='italic'>({gender[0]})</span>
-      </h1>
-      <h2 className='italic mb-3'> {bio}</h2>
-      <div className='flex gap-10'>
-        <div>
-          <p className='font-bold'>Skills</p>
-          <ul>
-            {skills.map((skill, i) => (
-              <li key={i} className='ml-2'>
-                {skill}
-              </li>
-            ))}
-          </ul>
+    <div className='flex flex-row border-2 py-4 px-4 my-5 rounded-lg justify-between w-[45%] items-center'>
+      <div className='flex flex-col '>
+        <h1 className='text-2xl font-bold'>
+          {firstName} {lastName} <span className='italic'>({gender[0]})</span>
+        </h1>
+        <h2 className='italic mb-3'> {bio}</h2>
+        <div className='flex gap-10'>
+          <div>
+            <p className='font-bold'>Skills</p>
+            <ul>
+              {skills.map((skill, i) => (
+                <li key={i} className='ml-2'>
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <span className='font-bold'>Popularity</span>:{' '}
+            {user?.interestedUsers?.length || 0}
+          </div>
         </div>
-        <div>
-          <span className='font-bold'>Popularity</span>:{' '}
-          {user?.interestedUsers?.length || 0}
+        <div className='flex mt-1'>
+          <button className='btn-orange mr-3' onClick={onShowInterestClick}>
+            <FontAwesomeIcon icon={faCircleNodes} className='' /> Show Interest
+          </button>
+          <button className='btn-orange mr-2' onClick={onSendMessageBtnClick}>
+            <FontAwesomeIcon icon={faCommentDots} className='' /> Send Message
+          </button>
         </div>
       </div>
-      <div className='flex mt-1'>
-        <button className='btn-orange mr-3' onClick={onShowInterestClick}>
-          <FontAwesomeIcon icon={faCircleNodes} className='' /> Show Interest
-        </button>
-        <button className='btn-orange mr-2' onClick={onSendMessageBtnClick}>
-          <FontAwesomeIcon icon={faCommentDots} className='' /> Send Message
-        </button>
+
+      <div className='flex flex-col gap-2'>
+        {dummyImgUrl && (
+          <Image
+            src={dummyImgUrl}
+            alt={'Project Image'}
+            width={240}
+            height={320}
+            className='rounded-lg'
+          />
+        )}
         <button
-          className='btn-cyan mr-2'
+          className='btn-cyan'
           onClick={() => router.push(`/project/${id}`)}
         >
           <FontAwesomeIcon icon={faCode} className='' /> See Projects
