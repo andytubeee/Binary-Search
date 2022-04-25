@@ -89,6 +89,7 @@ export default function UserCard({ user, currentUser }) {
             width={240}
             height={320}
             className='rounded-lg'
+            draggable={false}
           />
         )}
         <button
