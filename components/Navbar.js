@@ -81,7 +81,7 @@ export default function Navbar({ signedIn }) {
               <MenuItem label='Project' direct='project' icon={faCode} />
               <MenuItem label='Profile' direct='profile' icon={faAddressBook} />
               <button
-                className='btn-orange2 font-bold'
+                className='btn-orange font-bold'
                 onClick={() => signOut()}
               >
                 <FontAwesomeIcon icon={faArrowTurnUp} className='text-white' />
