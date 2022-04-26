@@ -201,7 +201,7 @@ export default function ChatPage({ pageProps }) {
           <>
             <h1 className='text-center text-3xl font-bold mt-5'>Chat</h1>
 
-            <div className='flex gap-3 justify-between my-3 px-2'>
+            <div className='flex gap-3 justify-between my-3'>
               <div className='flex h-[68vh] md:h-[79vh] border rounded flex-[0.5] lg:flex-[0.3]'>
                 <ChatUserColumn />
               </div>

@@ -33,7 +33,7 @@ export default function Navbar({ signedIn }) {
 
   return (
     <>
-      <nav className='flex border-b-2 w-[90%] mx-auto flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
+      <nav className='flex border-b-2 w-full mx-auto flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
         <div className='flex gap-5 flex-col md:flex-row'>
           <a
             className='flex gap-2 mr-5 items-center text-white cursor-pointer hover:translate-y-1 transition-all duration-200'

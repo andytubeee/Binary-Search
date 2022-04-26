@@ -6,6 +6,9 @@
 @tailwind utilities;
 
 @layer utilities {
+  body {
+    padding: 0 90px;
+  }
   .btn {
     @apply p-2 rounded  hover:translate-y-1 focus:outline-none text-white transition-all duration-300;
   }
