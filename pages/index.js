@@ -70,7 +70,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
   return (
     <>
       <div className='w-[90%] mx-auto'>
-        <h1 className='text-3xl text-center my-4'>
+        <h1 className='text-3xl mt-8 text-center my-4'>
           Hello{' '}
           {curUser
             ? curUser.firstName + ' ' + curUser.lastName
@@ -100,10 +100,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
                 if (e.key === 'Enter') onSearchClick();
               }}
             />
-            <button
-              onClick={onSearchClick}
-              className='btn-pink bg-bsPink1 min-w-max '
-            >
+            <button onClick={onSearchClick} className='btn-blue min-w-max '>
               Search&nbsp;
               <FontAwesomeIcon icon={faSearch} />
             </button>

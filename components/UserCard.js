@@ -94,7 +94,7 @@ export default function UserCard({ user, currentUser }) {
           </button>
         </div>
         <button
-          className='btn-cyan justify-self-end w-[150px]'
+          className='btn-pink justify-self-end w-[150px]'
           onClick={() => router.push(`/project/${id}`)}
         >
           <FontAwesomeIcon icon={faCode} className='' /> See Projects
