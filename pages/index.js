@@ -69,7 +69,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
   };
   return (
     <>
-      <div className='w-[90%] mx-auto'>
+      <div className='w-full mx-auto'>
         <h1 className='text-3xl mt-8 text-center my-4 font-bold'>
           Hello{' '}
           {curUser
@@ -84,7 +84,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
             Please complete your profile...
           </h1>
         )}
-        <div className='mx-5 p-2 flex flex-col'>
+        <div className='flex flex-col'>
           <h1 className='font-bold text-xl mb-2'>Browser Users</h1>
           <div className='flex gap-3'>
             <input
