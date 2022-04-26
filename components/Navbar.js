@@ -46,7 +46,7 @@ export default function Navbar({ signedIn }) {
               alt='Binary Search logo'
               draggable={false}
             />
-            <span className='text-3xl text-Black3 cursor-pointer font-logo'>
+            <span className='text-3xl text-Black cursor-pointer font-logo'>
               Binary Search
             </span>
           </a>
