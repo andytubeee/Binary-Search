@@ -69,7 +69,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
   };
   return (
     <>
-      <div className='max-h-sc'>
+      <div className='w-[90%] mx-auto'>
         <h1 className='text-3xl text-center my-4'>
           Hello{' '}
           {curUser
@@ -122,7 +122,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
               <option value='popularity'>Popularity</option>
             </select>
           </div>
-          <div className='overflow-scroll content-center flex flex-wrap gap-10 mt-5'>
+          <div className='overflow-scroll content-center flex flex-wrap min-w-[300px] justify-between gap-10 mt-5'>
             {(filteredUsers || []).map((user, i) => (
               <UserCard key={i} user={user} currentUser={curUser} />
             ))}

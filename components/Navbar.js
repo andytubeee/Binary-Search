@@ -23,7 +23,7 @@ export default function Navbar({ signedIn }) {
 
   const MenuItem = ({ label, direct = '', icon = null }) => (
     <button
-      className='group flex scale-125 items-center text-white hover:text-Black3 transition-all group-hover:scale-[1.3] duration-200'
+      className='group flex scale-125 items-center text-Cyan hover:text-Cyan3 transition-all group-hover:scale-[1.3] duration-200'
       onClick={() => router.push(`/${direct}`)}
     >
       {icon && <FontAwesomeIcon icon={icon} />}&nbsp;
@@ -33,7 +33,7 @@ export default function Navbar({ signedIn }) {
 
   return (
     <>
-      <nav className='bg-Cyan3 flex flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
+      <nav className='flex border-b-2 w-[90%] mx-auto flex-col content-center items-center md:flex-row justify-between py-5 px-4'>
         <div className='flex gap-5 flex-col md:flex-row'>
           <a
             className='flex gap-2 mr-5 items-center text-white cursor-pointer hover:translate-y-1 transition-all duration-200'
@@ -46,7 +46,9 @@ export default function Navbar({ signedIn }) {
               alt='Binary Search logo'
               draggable={false}
             />
-            <span className='text-2xl cursor-pointer'>Binary Search</span>
+            <span className='text-2xl text-Black3 cursor-pointer'>
+              Binary Search
+            </span>
           </a>
           <div className='flex gap-8' id='mobile-menu'>
             <MenuItem label='Home' icon={faHome} iconPos='l' />
