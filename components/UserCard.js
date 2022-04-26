@@ -49,7 +49,7 @@ export default function UserCard({ user, currentUser }) {
     });
   };
   return (
-    <div className='flex flex-row border-2 py-4 px-4 my-5 rounded-lg justify-between w-[45%] items-center'>
+    <div className='flex flex-row border-2 py-4 px-4 rounded-lg justify-between w-[40%] items-center'>
       <div className='flex flex-col '>
         <h1 className='text-2xl font-bold'>
           {firstName} {lastName} <span className='italic'>({gender[0]})</span>
@@ -86,8 +86,8 @@ export default function UserCard({ user, currentUser }) {
           <Image
             src={dummyImgUrl}
             alt={'Project Image'}
-            width={240}
-            height={320}
+            width={150}
+            height={150}
             className='rounded-lg'
             draggable={false}
           />

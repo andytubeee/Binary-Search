@@ -23,7 +23,7 @@ const getOtherUsers = async (email) => {
   const qs = await getDocs(q);
 
   return qs.docs.map(async (doc) => {
-    const dummyImgUrl = await fetch('https://loremflickr.com/320/240/computer')
+    const dummyImgUrl = await fetch('https://loremflickr.com/300/300/computer')
       .then((resp) => resp.url)
       .then((url) => url);
     return { ...Object(doc.data()), id: doc.id, dummyImgUrl };

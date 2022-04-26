@@ -122,7 +122,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
               <option value='popularity'>Popularity</option>
             </select>
           </div>
-          <div className='overflow-scroll mt-5'>
+          <div className='overflow-scroll content-center flex flex-wrap gap-10 mt-5'>
             {(filteredUsers || []).map((user, i) => (
               <UserCard key={i} user={user} currentUser={curUser} />
             ))}
