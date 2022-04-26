@@ -34,6 +34,7 @@ module.exports = {
     fontFamily: {
       sans: ['Rubik', 'sans-serif'],
       heading: ['Rubik', 'sans-serif'],
+      logo: ['VT323', 'sans-serif'],
     },
   },
   plugins: [require('flowbite/plugin')],
