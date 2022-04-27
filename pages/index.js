@@ -18,6 +18,7 @@ import {
   faRightFromBracket,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
+import { NextSeo } from 'next-seo';
 
 const HomeMain = ({ session, otherUsers, curUser }) => {
   const [search, setSearch] = useState('');
@@ -142,6 +143,16 @@ export default function Home({ pageProps }) {
       <Head>
         <title>Binary Search</title>
       </Head>
+      <NextSeo
+        title='Binary Search'
+        description='Binary Search is a platform for finding people with similar skills and interests. It is targeted towards CS and STEM major students, you can publish your side projects, and chat with other users.'
+        openGraph={{
+          type: 'website',
+          locale: 'en_IE',
+          url: 'https://www.binarysearch.club/',
+          site_name: 'Binary Search',
+        }}
+      />
       <Navbar signedIn={session} />
       {!session ? (
         <div className='flex flex-col min-h-[600px] mx-auto max-w-[400px] my-5 justify-center'>
