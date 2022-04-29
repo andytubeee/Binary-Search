@@ -55,7 +55,8 @@ const ProjectCard = ({ project, user, router }) => {
 };
 
 export default function ProjectPage({ pageProps }) {
-  const { session, curUser, projects } = pageProps;
+  const { session, curUser, projects, otherUserName } = pageProps;
+  console.log(otherUserName);
   const router = useRouter();
   return (
     <>
@@ -63,7 +64,10 @@ export default function ProjectPage({ pageProps }) {
         <title>Binary Search - Profile</title>
       </Head>
       <Navbar signedIn={session} />
-      <h1 className='text-center text-3xl font-bold mt-5'>Projects</h1>
+      <h1 className='text-center text-3xl font-bold mt-5'>
+        {' '}
+        {otherUserName}&apos;s Projects
+      </h1>
       {/* {uid} */}
       {!curUser && (
         <p className='mx-4 text-center'>
@@ -113,6 +117,7 @@ export async function getServerSideProps(context) {
         session,
         curUser: { ...curUser, id: curId },
         projects: theOtherUser?.projects || [],
+        otherUserName: theOtherUser.firstName + ' ' + theOtherUser.lastName,
       },
     },
   };

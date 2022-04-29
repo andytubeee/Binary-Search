@@ -15,17 +15,17 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
     "dotenv": "^16.0.0",
-    "firebase": "^9.6.11",
-    "flowbite": "^1.4.2",
+    "firebase": "^9.7.0",
+    "flowbite": "^1.4.4",
     "next": "12.1.5",
     "next-absolute-url": "^1.2.2",
-    "next-auth": "^4.3.2",
+    "next-auth": "^4.3.4",
     "next-seo": "^5.4.0",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
     "react-firebase-hooks": "^5.0.3",
     "react-scroll-to-bottom": "^4.2.0",
-    "sweetalert2": "^11.4.9"
+    "sweetalert2": "^11.4.10"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.5",
