@@ -55,6 +55,8 @@ Once you are logged in, go to `/` to see a list of active users on the platform
 
 ## Chat
 
+For each user on the homepage, you can chat with them, this chat feature is running in real-time. You can find existing chatrooms in `/chat`, everything is saved (unlike Snapchat😊)
+
 ## Project
 
 Once you are logged in, go to `/project` to publish new projects to your account, or manage your existing project.
