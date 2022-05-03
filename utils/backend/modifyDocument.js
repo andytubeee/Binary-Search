@@ -14,7 +14,18 @@ import {
 const addToCollection = async (collectionName, doc) => {
   const db = getFirestore();
   const userRef = collection(db, collectionName);
+  const userDoc = doc(db, collectionName, doc.id);
   await addDoc(userRef, doc);
+};
+
+const updateProfile = async (userId, newProfile) => {
+  const db = getFirestore();
+  const docRef = await getDoc(doc(db, 'users', userId));
+  const curUserData = docRef.data();
+  await setDoc(doc(db, 'users', userId), {
+    ...curUserData,
+    ...newProfile,
+  });
 };
 
 const saveToCollection = async (collectionName, newDoc, id) => {
@@ -181,6 +192,7 @@ export {
   addToCollection,
   saveToCollection,
   addFieldToCollection,
+  updateProfile,
   likeProject,
   removeLikeProject,
   generateChatroom,

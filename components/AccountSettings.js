@@ -5,6 +5,7 @@ import { getUserDocId } from '../utils/backend/getUser';
 import {
   addToCollection,
   saveToCollection,
+  updateProfile,
 } from '../utils/backend/modifyDocument';
 
 export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
@@ -43,8 +44,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
     if (!fb) {
       await addToCollection('users', userInfo);
     } else {
-      const docId = await getUserDocId(userInfo.email);
-      await saveToCollection('users', userInfo, docId);
+      await updateProfile(fb.id, userInfo);
     }
   };
   const validate = () => {
