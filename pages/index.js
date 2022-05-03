@@ -50,7 +50,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
   const onSearchClick = () => {
     if (search) {
       setFilteredUsers(
-        filteredUsers.filter((user) => {
+        otherUsers.filter((user) => {
           if (
             user.firstName.toLowerCase().includes(search.toLowerCase()) ||
             user.lastName.toLowerCase().includes(search.toLowerCase()) ||
@@ -93,6 +93,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
               placeholder='Search'
               onChange={(e) => {
                 setSearch(e.target.value);
+                console.log(e.target.value);
                 if (!e.target.value) {
                   setFilteredUsers(otherUsers);
                 }

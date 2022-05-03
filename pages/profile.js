@@ -38,7 +38,7 @@ const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
 
     return (
       <div>
-        <div className='flex gap-2 items-center border rounded px-3 justify-center content-start min-w-max'>
+        <div className='flex gap-2 items-center border rounded px-3 justify-between content-start min-w-max'>
           <p>{name}</p>
           <button
             className='bg-red-500 hover:bg-red-400 text-white rounded-full px-2 my-1'
@@ -57,7 +57,7 @@ const UserProfile = ({ user, router, usersInterested, interestedUsers }) => {
       });
     };
     return (
-      <div className='flex items-center gap-2 mx-auto border-2 rounded-md px-2'>
+      <div className='flex gap-2 items-center border rounded px-3 justify-between content-start min-w-max '>
         <p>{oUser.name}</p>
         <button
           className='bg-cyan-500 hover:bg-cyan-400 text-white rounded-full px-2 my-1'
