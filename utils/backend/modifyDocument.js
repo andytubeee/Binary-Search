@@ -95,8 +95,10 @@ const generateChatroom = async (uId1, uId2) => {
   // Let uId1 be current user and uId2 be the other user
   const db = getFirestore();
   const chatId = uId1 + '-' + uId2;
-  const docRef = await getDoc(doc(db, 'chatRooms', chatId));
-  if (!docRef.exists())
+  const chatId2 = uid2 + '-' + uId1;
+  const docRef1 = await getDoc(doc(db, 'chatRooms', chatId));
+  const docRef2 = await getDoc(doc(db, 'chatRooms', chatId2));
+  if (!docRef1.exists() && !docRef2.exists())
     await setDoc(doc(db, 'chatRooms', chatId), {
       messages: [],
     });

@@ -48,6 +48,7 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
   }, [sortBy]);
 
   const onSearchClick = () => {
+    console.log(filteredUsers);
     if (search) {
       setFilteredUsers(
         otherUsers.filter((user) => {
