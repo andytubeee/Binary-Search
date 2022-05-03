@@ -8,9 +8,7 @@ import { useWindowSize } from '../utils/useWindowSize';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const size = useWindowSize();
-  // if (size.width < 768) {
-  //   return <Error errorMsg='Not optimized for mobile device' />;
-  // }
+
   return (
     <SessionProvider session={session}>
       <NextSeo

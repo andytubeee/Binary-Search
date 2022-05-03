@@ -70,7 +70,4 @@ export default NextAuth({
       return Promise.resolve('/');
     },
   },
-  // pages: {
-  //   signIn: ['/signin', '/register'],
-  // },
 });
