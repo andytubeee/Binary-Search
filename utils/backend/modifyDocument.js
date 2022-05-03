@@ -14,7 +14,6 @@ import {
 const addToCollection = async (collectionName, doc) => {
   const db = getFirestore();
   const userRef = collection(db, collectionName);
-  // const userDoc = doc(db, collectionName, doc.id);
   await addDoc(userRef, doc);
 };
 
