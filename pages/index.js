@@ -93,7 +93,6 @@ const HomeMain = ({ session, otherUsers, curUser }) => {
               placeholder='Search'
               onChange={(e) => {
                 setSearch(e.target.value);
-                console.log(e.target.value);
                 if (!e.target.value) {
                   setFilteredUsers(otherUsers);
                 }
