@@ -191,7 +191,7 @@ export async function getServerSideProps(context) {
       });
     })
   );
-  // await Promise.all(usersInterestedPromise);
+ 
   if (!session)
     return {
       redirect: {
