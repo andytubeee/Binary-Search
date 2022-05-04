@@ -42,9 +42,9 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
   );
   const handleSubmit = async (e) => {
     if (!fb) {
-      await addToCollection('users', userInfo);
+      await addToCollection('users', userInfo); // Create a brand new document
     } else {
-      await updateProfile(fb.id, userInfo);
+      await updateProfile(fb.id, userInfo); // Update to an existing document
     }
   };
   const validate = () => {
@@ -78,10 +78,9 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
             : 'Your information has been updated',
           icon: 'success',
         }).then(() => {
-          router.push('/');
+          router.push('/'); // Push to the home page
         });
       });
-      //
     } catch (err) {
       Swal.fire({
         title: 'Error',
@@ -95,7 +94,7 @@ export const AccountSettings = ({ session: user, firebaseUser: fb = null }) => {
       ...userInfo,
       skills: [...userInfo.skills, newSkill],
     });
-    skillInputRef.current.value = '';
+    skillInputRef.current.value = ''; // Clear the text input after registered
   };
   return (
     <>

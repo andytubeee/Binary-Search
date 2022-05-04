@@ -177,6 +177,8 @@ export async function getServerSideProps(context) {
   const userEmail = session?.user?.email;
   const user = userEmail !== undefined ? await getUserByEmail(userEmail) : null;
   const userId = await getUserDocId(userEmail);
+
+  // Get users interested in current user, resolve every promise object
   const usersInterested = await Promise.all(
     (user?.usersInterested || []).map(async (userId) => {
       return await getUserByID(userId).then((res) => {
@@ -184,6 +186,8 @@ export async function getServerSideProps(context) {
       });
     })
   );
+
+  // Get other users interested in current user, resolve every promise object
   const otherUsersInterestedInCurrentUser = await Promise.all(
     (user?.interestedUsers || []).map(async (userId) => {
       return await getUserByID(userId).then((res) => {
@@ -191,7 +195,7 @@ export async function getServerSideProps(context) {
       });
     })
   );
-  // await Promise.all(usersInterestedPromise);
+  // Protect route from non-signed in users
   if (!session)
     return {
       redirect: {
@@ -204,7 +208,7 @@ export async function getServerSideProps(context) {
     props: {
       pageProps: {
         session,
-        user: userId ? { ...user, id: userId } : null,
+        user: userId ? { ...user, id: userId } : null, // userId is null if user is not signed in
         usersInterested,
         otherUsersInterestedInCurrentUser,
       },

@@ -30,7 +30,6 @@ export default NextAuth({
           credentials.password
         )
           .then((userCredential) => {
-            // console.log(userCredential.user.uid);
             return {
               email: userCredential.user.email,
               name: userCredential.user.displayName,
@@ -39,7 +38,7 @@ export default NextAuth({
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            return null;
+            return null; // No user found with given credentials
           });
         return user;
       },
@@ -51,7 +50,7 @@ export default NextAuth({
     jwt: true,
   },
   jwt: {
-    encryption: true,
+    encryption: true, // Use JWT encryption
   },
   callbacks: {
     async session({ session, token }) {
@@ -64,6 +63,7 @@ export default NextAuth({
       return token.token;
     },
     redirect: async (url, _baseUrl) => {
+      // called anytime the user is redirected to a callback URL on signin or signout.
       if (url === '/profile') {
         return Promise.resolve('/');
       }

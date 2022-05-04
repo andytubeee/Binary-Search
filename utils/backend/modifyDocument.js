@@ -50,15 +50,17 @@ const likeProject = async (projectId, curUserId) => {
   const docSnap = await getDoc(docRef);
   const originalData = docSnap.data();
 
-  originalData = {
-    ...originalData,
+  // Create a new data object from original data, and add the current user to the likedBy list
+  const newData = {
+    ...originalData, // Spread thr original data fields
+    // Map through the projects array and add the current user to the likedBy list
     projects: [
       ...(originalData.projects || []).map((project) => {
         if (project.id !== projectId) {
           return project;
         }
         return {
-          ...project,
+          ...project, // Spread the original project fields
           likedBy: [
             ...(originalData.projects.filter(
               (project) => project.id === projectId
@@ -69,7 +71,7 @@ const likeProject = async (projectId, curUserId) => {
       }),
     ],
   };
-  await setDoc(docRef, originalData);
+  await setDoc(docRef, newData);
 };
 
 const removeLikeProject = async (projectId, curUserId) => {
@@ -79,7 +81,7 @@ const removeLikeProject = async (projectId, curUserId) => {
   const docSnap = await getDoc(docRef);
   const originalData = docSnap.data();
 
-  originalData = {
+  const newData = {
     ...originalData,
     projects: [
       ...(originalData.projects || []).map((project) => {
@@ -91,14 +93,13 @@ const removeLikeProject = async (projectId, curUserId) => {
           likedBy: [
             ...originalData.projects
               .filter((project) => project.id === projectId)[0]
-              .likedBy.filter((user) => user !== curUserId),
+              .likedBy.filter((user) => user !== curUserId), // Filter out the current user from the likedBy list
           ],
         };
       }),
     ],
   };
-  // console.log(originalData);
-  await setDoc(docRef, originalData);
+  await setDoc(docRef, newData);
 };
 
 const generateChatroom = async (uId1, uId2) => {
@@ -108,6 +109,8 @@ const generateChatroom = async (uId1, uId2) => {
   const chatId2 = uid2 + '-' + uId1;
   const docRef1 = await getDoc(doc(db, 'chatRooms', chatId));
   const docRef2 = await getDoc(doc(db, 'chatRooms', chatId2));
+
+  // Prevent generating a chatroom if one already exists (a->b == b->a)
   if (!docRef1.exists() && !docRef2.exists())
     await setDoc(doc(db, 'chatRooms', chatId), {
       messages: [],
