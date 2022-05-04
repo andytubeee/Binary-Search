@@ -70,7 +70,9 @@ const ChatWindow = ({ chat, curUser }) => {
           message.userId === curUser.id ? ' bg-Cyan3 ml-5' : 'bg-gray-400 mr-5'
         }  text-white rounded-lg px-3 py-2`}
       >
-        <p className='text-xs font-bold'>{message.name}</p>
+        <p className='text-xs font-bold'>
+          {curUser.firstName + ' ' + curUser.lastName}
+        </p>
         <p>{message.message}</p>
       </div>
     );
