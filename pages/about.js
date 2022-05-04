@@ -20,6 +20,7 @@ export default function AboutPage({ pageProps }) {
   ];
   const [slogan, setSlogan] = useState('');
   useEffect(() => {
+    // Generates a random slogan from a list of slogans
     setSlogan(slogans[Math.floor(Math.random() * slogans.length)]);
   }, []);
   return (
