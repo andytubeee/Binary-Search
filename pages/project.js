@@ -156,7 +156,7 @@ const ProjectCard = ({ project, user, router }) => {
           'users',
           docId,
           'projects',
-          curProjects.filter((p) => p.id !== project.id)
+          curProjects.filter((p) => p.id !== project.id) // Filter out matching project and keep the others
         )
           .then(() => {
             Swal.fire({
