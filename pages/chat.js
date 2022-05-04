@@ -59,7 +59,7 @@ const ChatWindow = ({ chat, curUser }) => {
         name: curUser.firstName + ' ' + curUser.lastName,
       };
       chatInput.current.value = '';
-      sendChatToFirebase(chat.chatId, chatObj);
+      sendChatToFirebase(chat.chatId, chatObj); // Push new message object to corresponding chat room
     }
   };
 
@@ -121,38 +121,37 @@ const ChatWindow = ({ chat, curUser }) => {
         className='flex-1 overflow-y-scroll no-scrollbar flex flex-col max-h-[81%] sm:max-h-[90%] lg:max-h-[90%]'
         ref={chatMessagesRef}
       >
-        <ScrollToBottom>
-          {chatSnapshot.messages &&
-            chatSnapshot.messages.map((msg, i) => (
-              <div className='flex flex-col' key={i}>
-                <div
-                  className={`flex items-start ${
-                    msg.userId === curUser.id
-                      ? 'self-end justify-end'
-                      : 'self-start justify-start'
-                  }  w-[50%]`}
-                >
-                  <Message message={msg} chatRoomId={chat.chatId} />
+        {chatSnapshot.messages &&
+          chatSnapshot.messages.map((msg, i) => (
+            <div className='flex flex-col' key={i}>
+              <div
+                className={`flex items-start ${
+                  msg.userId === curUser.id
+                    ? 'self-end justify-end'
+                    : 'self-start justify-start'
+                }  w-[50%]`}
+              >
+                <Message message={msg} chatRoomId={chat.chatId} />
 
-                  {/* Display delete button */}
-                  {msg.userId === curUser.id && (
-                    <button
-                      className='hover:text-red-400 mt-2 ml-2'
-                      onClick={() => {
-                        onDeleteMessage(msg);
-                      }}
-                    >
-                      x
-                    </button>
-                  )}
-                </div>
+                {/* Display delete button for messages that belongs to current user */}
+                {msg.userId === curUser.id && (
+                  <button
+                    className='hover:text-red-400 mt-2 ml-2'
+                    onClick={() => {
+                      onDeleteMessage(msg);
+                    }}
+                  >
+                    x
+                  </button>
+                )}
               </div>
-            ))}
-        </ScrollToBottom>
+            </div>
+          ))}
       </div>
     </div>
   );
 };
+
 export default function ChatPage({ pageProps }) {
   const { session, user, chats } = pageProps;
   const router = useRouter();
@@ -196,6 +195,7 @@ export default function ChatPage({ pageProps }) {
       <div className='overflow-hidden min-h-screen flex flex-col'>
         <Navbar signedIn={session} />
         {!user ? (
+          // If user's profile is not complete, show profile setting component
           <AccountSettings session={session.user} />
         ) : (
           <>
@@ -240,6 +240,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
   const chatPromise = getActiveChatRooms(id).then(async (resArr) => {
     return await Promise.all(resArr).then((value) => value);
   });

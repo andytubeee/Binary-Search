@@ -21,7 +21,7 @@ const getUserByEmail = async (email) => {
 const getOtherUsers = async (email) => {
   const db = getFirestore();
   const userRef = collection(db, 'users');
-  const q = query(userRef, where('email', '!=', email));
+  const q = query(userRef, where('email', '!=', email)); // Get every other user except the current user using current user's email
   const qs = await getDocs(q);
 
   return qs.docs.map(async (doc) => {
@@ -34,6 +34,7 @@ const getOtherUsers = async (email) => {
 };
 
 const getUserDocId = async (email) => {
+  // Get user's document id from firestore using email
   if (!email) return null;
   const db = getFirestore();
   const userRef = collection(db, 'users');
@@ -42,6 +43,7 @@ const getUserDocId = async (email) => {
   return qs.size == 1 ? qs.docs[0].id : null;
 };
 
+// Generic util function to get a document from firestore
 const getDocField = async (collection, uid, field) => {
   const db = getFirestore();
   const userRef = collection(db, collection);

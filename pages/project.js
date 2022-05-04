@@ -57,7 +57,7 @@ const AddProject = ({ user, router }) => {
   const addProject = async () => {
     if (pInfo.name.length > 0 && pInfo.description.length > 0) {
       const docId = await getUserDocId(user.email);
-      const curProjects = user.projects || [];
+      const curProjects = user.projects || []; // Use empty array if projects is null (No projects published)
       const projId = docId.concat('-', curProjects.length);
       await addFieldToCollection('users', docId, 'projects', [
         ...curProjects,
@@ -156,7 +156,7 @@ const ProjectCard = ({ project, user, router }) => {
           'users',
           docId,
           'projects',
-          curProjects.filter((f) => f.name !== project.name)
+          curProjects.filter((p) => p.id !== project.id)
         )
           .then(() => {
             Swal.fire({
