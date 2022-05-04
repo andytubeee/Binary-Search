@@ -106,7 +106,7 @@ const generateChatroom = async (uId1, uId2) => {
   // Let uId1 be current user and uId2 be the other user
   const db = getFirestore();
   const chatId = uId1 + '-' + uId2;
-  const chatId2 = uid2 + '-' + uId1;
+  const chatId2 = uId2 + '-' + uId1;
   const docRef1 = await getDoc(doc(db, 'chatRooms', chatId));
   const docRef2 = await getDoc(doc(db, 'chatRooms', chatId2));
 
@@ -139,14 +139,16 @@ const showInterestToUser = async (
   const otherUserDocRef = await getDoc(doc(db, 'users', otherUserId));
   const curUserData = curUserDocRef.data();
   const otherUserData = otherUserDocRef.data();
-  await setDoc(doc(db, 'users', curUserId), {
-    ...curUserData,
-    usersInterested: [...(curUserData.usersInterested || []), otherUserId], // add the other user to current user's interested list
-  });
-  await setDoc(doc(db, 'users', otherUserId), {
-    ...otherUserData,
-    interestedUsers: [...(otherUserData.interestedUsers || []), curUserId], // add current user to other user's interested list
-  });
+  if (!curUserData.usersInterested.includes(otherUserId)) {
+    await setDoc(doc(db, 'users', curUserId), {
+      ...curUserData,
+      usersInterested: [...(curUserData.usersInterested || []), otherUserId], // add the other user to current user's interested list
+    });
+    await setDoc(doc(db, 'users', otherUserId), {
+      ...otherUserData,
+      interestedUsers: [...(otherUserData.interestedUsers || []), curUserId], // add current user to other user's interested list
+    });
+  }
 };
 
 // interestedUsers: Other users interested in you
