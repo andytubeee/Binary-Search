@@ -71,7 +71,9 @@ const ChatWindow = ({ chat, curUser }) => {
         }  text-white rounded-lg px-3 py-2`}
       >
         <p className='text-xs font-bold'>
-          {curUser.firstName + ' ' + curUser.lastName}
+          {message.userId != curUser.id
+            ? message.name
+            : curUser.firstName + ' ' + curUser.lastName}
         </p>
         <p>{message.message}</p>
       </div>
